@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#fffdfbff">
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <EditText
+            android:layout_margin="20dp"
+            android:inputType="textEmailAddress"
+            android:hint="Email"
+            android:id="@+id/editTextEmail"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+        <EditText
+            android:layout_margin="20dp"
+            android:inputType="textPassword"
+            android:hint="Password"
+            android:id="@+id/editTextPassword"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+        <Button
+            android:layout_margin="20dp"
+            android:id="@+id/buttonLogin"
+            android:text="LOGIN"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+        <TextView
+            android:layout_margin="20dp"
+            android:textAlignment="center"
+            android:text="Don't Have an account? Register here"
+            android:id="@+id/textViewRegister"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "849537997191",
+    "firebase_url": "https://foodfetch-a7334.firebaseio.com",
+    "project_id": "foodfetch-a7334",
+    "storage_bucket": "foodfetch-a7334.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849537997191:android:b41704866b3dc825",
+        "android_client_info": {
+          "package_name": "group14.foodfetch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849537997191-m0ent2l95fajgpnai7rl06pd6pe3180p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEImphWgyOk9Cthrcg5YqgWaO_sXGDYVw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

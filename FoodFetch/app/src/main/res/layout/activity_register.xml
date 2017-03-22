@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="group14.foodfetch.RegisterActivity">
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <EditText
+            android:layout_margin="20dp"
+            android:inputType="textEmailAddress"
+            android:hint="Email"
+            android:id="@+id/editTextEmail"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+        <EditText
+            android:layout_margin="20dp"
+            android:inputType="textPassword"
+            android:hint="Password"
+            android:id="@+id/editTextPassword"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+        <Button
+            android:layout_margin="20dp"
+            android:id="@+id/buttonRegisterDonor"
+            android:text="Register as Donor"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+        <Button
+            android:layout_margin="20dp"
+            android:id="@+id/buttonRegisterFB"
+            android:text="Register as FoodBank"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+        <TextView
+            android:layout_margin="20dp"
+            android:textAlignment="center"
+            android:text="Having an account? Login here"
+            android:id="@+id/textViewLogin"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            />
+    </LinearLayout>
+</RelativeLayout>
