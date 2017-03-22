@@ -14,4 +14,20 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+
+
+    <!-- an array list for food type-->
+    <string-array name="foodTypeList">
+        <item>Select Food Type</item>
+        <item>Fruit</item>
+        <item>Vegetable</item>
+        <item>Meat</item>
+        <item>Seafood</item>
+        <item>Nut</item>
+        <item>Bread</item>
+        <item>Dairy</item>
+    </string-array>
+
+
 </resources>

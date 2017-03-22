@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
                     finish();
-                    startActivity(new Intent(getApplicationContext(), tester.class));
+                    startActivity(new Intent(getApplicationContext(), PostActivity.class));
                 }
             }
         };
@@ -98,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if(task.isSuccessful()){
                     finish();
                     //goto Corresponding page
-                    startActivity(new Intent(getApplicationContext(), tester.class));
+                    startActivity(new Intent(getApplicationContext(), PostActivity.class));
                 }
                 else{
                     Toast.makeText(RegisterActivity.this, "Failed, Try again.", Toast.LENGTH_LONG)
@@ -147,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             finish();
                             //goto Corresponding page
                             startActivity(new Intent(getApplicationContext(),
-                                    tester.class));
+                                    PostActivity.class));
 
                         }
                         else{
