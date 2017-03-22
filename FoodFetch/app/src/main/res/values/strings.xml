@@ -14,4 +14,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
+    <string name="app_label">This is the search app label</string>
+    <string name="search_hint">This is the search hint</string>
+    <string name="overview_title">Post Overview</string>
 </resources>
