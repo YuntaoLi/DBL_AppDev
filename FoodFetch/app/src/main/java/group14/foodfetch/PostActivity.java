@@ -17,12 +17,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PostActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class PostActivity extends AppCompatActivity implements
+        AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     //All components used for a add post page: =====================================================
     private EditText input_title;
@@ -36,6 +40,17 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
     private Button publish;
     private Button buttonLogout;/*need to be removed*/
     private FirebaseAuth firebaseAuth;
+
+    /*firebase db essentials*/
+    private DatabaseReference databaseReference;
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private String newTitle;
+    private String newFoodType;
+    private String newExpiredDate;
+    private Bitmap newPicture;
+    private String newDescription;
+
     //==============================================================================================
 
 
@@ -46,11 +61,16 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
         /*firebaseAuth property*/
         firebaseAuth = FirebaseAuth.getInstance();
+        /*Get the user*/
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         if(firebaseAuth.getCurrentUser() == null){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+
+        /*Get data structure*/
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         //link all components: =====================================================================
         input_title = (EditText) findViewById(R.id.titleInput);
@@ -60,7 +80,9 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
         buttonLogout = (Button) findViewById(R.id. buttonLogout);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> foodType_adapter = new ArrayAdapter<String>(PostActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.foodTypeList));
+        ArrayAdapter<String> foodType_adapter = new ArrayAdapter<>(PostActivity.this,
+                android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.foodTypeList));
         // Specify the layout to use when the list of choices appears
         foodType_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -101,10 +123,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
     /**
      * function for button add Picture:
      * when button add picture is clicked, the application should provide a picture for user to pick
-     *
-     * @param v
      */
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public void addPicture(View v) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -113,7 +132,6 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
     }
-
 
     //cannot test since there is an empty gallery in model phone
     @Override
@@ -125,17 +143,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-//}
-
     /**all information should be saved after submit button is on clicked
-     *
-     * @param v
      */
-    String newTitle;
-    String newFoodType;
-    String newExpiredDate;
-    Bitmap newPicture;
-    String newDescription;
     public void addPost(View v){
 
         //get the input contents:
@@ -175,23 +184,19 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-
     /**
      * A function push the newPost to database, will be used in addPost()
      *
-     * @param newPost
      */
     public void pushToDatabase(Post newPost){
-        //here will be filled with function link to database
-
-        Toast.makeText(this, "your post " + newPost.getTitle()+ " is published at " + newPost.getPublishDate(), Toast.LENGTH_SHORT ).show();
-
-        Log.d("title", newPost.getTitle());
-        Log.d("foodType", newPost.getFoodType());
-        Log.d("expired date", newPost.getExpiredDate());
-        Log.d("published date", newPost.getPublishDate());
+        /*call an donor instance*/
+        Donor donor = new Donor(newPost);
+        /*log to the current user*/
+        FirebaseUser usr = firebaseAuth.getCurrentUser();
+        /*save*/
+        databaseReference.child(usr.getUid()).setValue(donor);
+        Toast.makeText(this, "Posted", Toast.LENGTH_LONG).show();
     }
-
 
     @Override
     public void onClick(View v) {
