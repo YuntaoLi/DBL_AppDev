@@ -204,11 +204,15 @@ public class PostActivity extends NavigationDrawer implements
      * A function push the newPost to database, will be used in addPost()
      *
      */
+    private User donor = new Donor();
     public void pushToDatabase(Post newPost){
         /*call an donor instance*/
-        Donor donor = new Donor(newPost);
+
+        donor.setPublish(newPost);
         /*log to the current user*/
         FirebaseUser usr = firebaseAuth.getCurrentUser();
+        newPost.setAuthor(usr.getEmail());
+        //newPost.setPublishID();
         /*save*/
         databaseReference.child(usr.getUid()).setValue(donor);
         Toast.makeText(this, "Posted", Toast.LENGTH_LONG).show();
