@@ -185,11 +185,14 @@ public class AnnouncementActivity extends AppCompatActivity implements
      * A function push the newPost to database, will be used in addPost()
      *
      */
+    private User foodBank= new FoodBank();
     public void pushToDatabase(Announcement newAnnouncement){
         /*call an foodBank instance*/
-        User foodBank= new FoodBank(newAnnouncement);
+
+        foodBank.setPublish(newAnnouncement);
         /*log to the current user*/
         FirebaseUser usr = firebaseAuth.getCurrentUser();
+        newAnnouncement.setAuthor("1"+ usr.getUid());
         /*save*/
         databaseReference.child(usr.getUid()).setValue(foodBank);
         Toast.makeText(this, "Published", Toast.LENGTH_LONG).show();

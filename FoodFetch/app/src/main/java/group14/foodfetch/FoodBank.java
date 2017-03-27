@@ -10,9 +10,10 @@ import android.graphics.Bitmap;
 public class FoodBank  extends User {
 
 
-    public FoodBank(Announcement announcement) {
-            setDoner(true);
-            setPublish(announcement);
+    public FoodBank() {
+            setDoner(false);
 
     }
+
+
 }

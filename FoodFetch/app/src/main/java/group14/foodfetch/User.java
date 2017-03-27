@@ -1,5 +1,9 @@
 package group14.foodfetch;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by s141680 on 27-3-2017.
  */
@@ -9,7 +13,7 @@ abstract class User {
     private String usrname;
     private String usrid;
     private boolean isDoner;
-    private Publish publish;
+    private List<Publish> publishList = new ArrayList<Publish>();
 
 
     //set functions should be filled
@@ -18,7 +22,7 @@ abstract class User {
         isDoner = doner;
     }
 
-    protected void setUsrid(String usrid) {
+     protected void setUsrid(String usrid) {
         this.usrid = usrid;
     }
 
@@ -27,7 +31,7 @@ abstract class User {
     }
 
     protected void setPublish(Publish publish) {
-        this.publish = publish;
+        publishList.add(publish);
     }
 
     //get functions should be filled
@@ -43,7 +47,7 @@ abstract class User {
         return isDoner;
     };
 
-    protected Publish getPublish() {
-        return publish;
+    protected List<Publish> getPublish() {
+        return publishList;
     }
 }

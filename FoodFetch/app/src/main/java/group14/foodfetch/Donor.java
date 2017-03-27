@@ -8,9 +8,8 @@ import android.graphics.Bitmap;
 /*Donor class*/
 public class Donor extends User {
 
-    public Donor(Post post) {
+    public Donor() {
         setDoner(true);
-        setPublish(post);
     }
 
 
