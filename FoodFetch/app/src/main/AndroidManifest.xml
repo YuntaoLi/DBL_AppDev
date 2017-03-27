@@ -42,7 +42,9 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
             android:label="@string/app_name"/>
 
-        <activity android:name=".PostActivity"></activity>
+        <activity android:name=".PostActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
     </application>
 
