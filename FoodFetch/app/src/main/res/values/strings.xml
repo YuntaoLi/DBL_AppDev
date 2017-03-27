@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">FoodFetch</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="test_string">This is a string</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -36,6 +37,6 @@
         <item>Bread</item>
         <item>Dairy</item>
     </string-array>
-
+   
 
 </resources>
