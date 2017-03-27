@@ -9,14 +9,10 @@ import android.graphics.Bitmap;
 
 public class FoodBank  extends User {
 
-/*Foodbank class*/
-    //    public String usrname;
-//    public String usrid;
-    public Announcement announcement;
 
     public FoodBank(Announcement announcement) {
-//        this.usrname = usrname;
-//        this.usrid = usrid;
-        this.announcement = announcement;
+            setDoner(true);
+            setPublish(announcement);
+
     }
 }
