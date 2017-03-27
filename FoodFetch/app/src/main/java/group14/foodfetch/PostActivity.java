@@ -196,7 +196,7 @@ public class PostActivity extends AppCompatActivity implements
         /*log to the current user*/
         FirebaseUser usr = firebaseAuth.getCurrentUser();
         newPost.setAuthor(usr.getEmail());
-        //newPost.setPublishID();
+        newPost.setPublishID(donor.getPublish().size() + " - " + usr.getUid());
         /*save*/
         databaseReference.child(usr.getUid()).setValue(donor);
         Toast.makeText(this, "Posted", Toast.LENGTH_LONG).show();

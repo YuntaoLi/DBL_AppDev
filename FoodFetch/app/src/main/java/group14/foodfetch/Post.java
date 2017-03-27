@@ -14,7 +14,7 @@ public class Post extends Publish{
         setFoodType(foodType);
         setExpiredDate(expiredDate);
         setAcceptence(false);
-        setPublishID(1);  ///should be removed by a generator function later
+        //setPublishID(1);  ///should be removed by a generator function later
     }
     //----------------------------------------------------------------------------------------------
 
