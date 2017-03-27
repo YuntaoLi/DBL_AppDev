@@ -190,7 +190,7 @@ public class PostActivity extends AppCompatActivity implements
      */
     public void pushToDatabase(Post newPost){
         /*call an donor instance*/
-        Donor donor = new Donor(newPost);
+        User donor = new Donor(newPost);
         /*log to the current user*/
         FirebaseUser usr = firebaseAuth.getCurrentUser();
         /*save*/

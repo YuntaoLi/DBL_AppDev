@@ -159,7 +159,7 @@ public class AnnouncementActivity extends AppCompatActivity implements
 
         if(newTitle.matches("") || newFoodType.matches("Select Food Type") ){
 
-            Toast.makeText(this, "Please fill title / food type / expired date for your post", Toast.LENGTH_SHORT ).show();
+            Toast.makeText(this, "Please fill title / food type for your post", Toast.LENGTH_SHORT ).show();
 
         } else {
 
@@ -187,7 +187,7 @@ public class AnnouncementActivity extends AppCompatActivity implements
      */
     public void pushToDatabase(Announcement newAnnouncement){
         /*call an foodBank instance*/
-        FoodBank foodBank= new FoodBank(newAnnouncement);
+        User foodBank= new FoodBank(newAnnouncement);
         /*log to the current user*/
         FirebaseUser usr = firebaseAuth.getCurrentUser();
         /*save*/
