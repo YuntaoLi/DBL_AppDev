@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,7 +26,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PostActivity extends AppCompatActivity implements
+public class PostActivity extends NavigationDrawer implements
         AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     //All components used for a add post page: =====================================================
@@ -105,6 +106,21 @@ public class PostActivity extends AppCompatActivity implements
         publish = (Button) findViewById(R.id.publish);
         publish.setOnClickListener(this);
         //==========================================================================================
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        return super.onNavigationItemSelected(item);
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
