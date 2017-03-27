@@ -14,10 +14,28 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
     <string name="title_activity_navigation_drawer">Food Fetch</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+
+
+
+    <!-- an array list for food type-->
+    <string-array name="foodTypeList">
+        <item>Select Food Type</item>
+        <item>Fruit</item>
+        <item>Vegetable</item>
+        <item>Meat</item>
+        <item>Seafood</item>
+        <item>Nut</item>
+        <item>Bread</item>
+        <item>Dairy</item>
+    </string-array>
+
+
 </resources>
