@@ -168,25 +168,30 @@ public class PostActivity extends NavigationDrawer implements
         newFoodType = input_foodType.getSelectedItem().toString();
 
         int newExpiredDate_year = input_expiredDate.getYear();
-        int newExpiredDate_month = input_expiredDate.getMonth();
+        int newExpiredDate_month = input_expiredDate.getMonth() + 1;  //since month in Date Picker starts from 0
         int newExpiredDate_date = input_expiredDate.getDayOfMonth();
-        newExpiredDate = newExpiredDate_date + " - " + newExpiredDate_month + " - " + newExpiredDate_year;
+        newExpiredDate = newExpiredDate_year + "/" + newExpiredDate_month + "/" + newExpiredDate_date;
 
         newDescription = input_description.getText().toString();
 
 
+        //giving restriction to expired date: cannot be the day before today
+        DateFormat dateFormat_date = new SimpleDateFormat("yyyy/MM/dd");
+        Date date_today = new Date();
 
-        if(newTitle.matches("") || newFoodType.matches("Select Food Type") || newExpiredDate.matches("")){
 
-            Toast.makeText(this, "Please fill title / food type / expired date for your post", Toast.LENGTH_SHORT ).show();
+
+        if(newTitle.matches("") || newFoodType.matches("Select Food Type *") || newExpiredDate.compareTo(dateFormat_date.format(date_today)) < 0){
+
+            Toast.makeText(this, "Please fill in correct title / food type / expired date for your post", Toast.LENGTH_SHORT ).show();
 
         } else {
 
             Post newPost = new Post(newTitle, newFoodType, newExpiredDate);
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            Date date = new Date();
+            DateFormat dateFormat_Time = new SimpleDateFormat("HH:mm:ss");
+            //Date date = new Date();
             //System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
-            newPost.setPublishDate(dateFormat.format(date));//need a function to get current time in format
+            newPost.setPublishDate(dateFormat_date.format(date_today) + " " +dateFormat_Time.format(date_today));//need a function to get current time in format
 
             if (!newDescription.matches("")) {
                 newPost.setDescription(newDescription);
@@ -212,7 +217,7 @@ public class PostActivity extends NavigationDrawer implements
         /*log to the current user*/
         FirebaseUser usr = firebaseAuth.getCurrentUser();
         newPost.setAuthor(usr.getEmail());
-        newPost.setPublishID(donor.getPublish().size() + " - " + usr.getUid());
+        newPost.setPublishID("POST - " + donor.getPublish().size() + " - " + usr.getUid());
         /*save*/
         databaseReference.child(usr.getUid()).setValue(donor);
         Toast.makeText(this, "Posted", Toast.LENGTH_LONG).show();
@@ -228,9 +233,9 @@ public class PostActivity extends NavigationDrawer implements
                 addPost(v);
                 break;
             case R.id.buttonLogout:/*remove it in the future*/
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
+              //  firebaseAuth.signOut();
+              //  finish();
+                startActivity(new Intent(this, AnnouncementActivity.class));
                 break;
         }
 

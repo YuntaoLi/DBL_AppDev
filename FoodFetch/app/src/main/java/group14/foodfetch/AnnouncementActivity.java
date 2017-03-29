@@ -192,7 +192,8 @@ public class AnnouncementActivity extends AppCompatActivity implements
         foodBank.setPublish(newAnnouncement);
         /*log to the current user*/
         FirebaseUser usr = firebaseAuth.getCurrentUser();
-        newAnnouncement.setAuthor("1"+ usr.getUid());
+        newAnnouncement.setAuthor(usr.getEmail());
+        newAnnouncement.setPublishID("ANO - " + foodBank.getPublish().size() + " - " + usr.getUid());
         /*save*/
         databaseReference.child(usr.getUid()).setValue(foodBank);
         Toast.makeText(this, "Published", Toast.LENGTH_LONG).show();

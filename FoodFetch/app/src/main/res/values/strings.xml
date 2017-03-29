@@ -27,7 +27,7 @@
 
     <!-- an array list for food type-->
     <string-array name="foodTypeList">
-        <item>Select Food Type</item>
+        <item>Select Food Type *</item>
         <item>Fruit</item>
         <item>Vegetable</item>
         <item>Meat</item>
