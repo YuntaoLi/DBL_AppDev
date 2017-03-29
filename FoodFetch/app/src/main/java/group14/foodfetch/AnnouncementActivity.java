@@ -60,6 +60,9 @@ public class AnnouncementActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_announcement);
 
+        //notify users which are required information
+        Toast.makeText(this, "Please fill in all compulsory information (labelled by *)", Toast.LENGTH_SHORT ).show();
+
         /*firebaseAuth property*/
         firebaseAuth = FirebaseAuth.getInstance();
         /*Get the user*/
