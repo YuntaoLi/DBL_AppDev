@@ -22,7 +22,9 @@
 
     <string name="action_settings">Settings</string>
 
-
+    <!--Nav open and close-->
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 
 
     <!-- an array list for food type-->
@@ -36,6 +38,7 @@
         <item>Bread</item>
         <item>Dairy</item>
     </string-array>
+    <string name="title_activity_nav__base_layout">Nav_Base_layout</string>
 
 
 </resources>

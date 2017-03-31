@@ -4,7 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,9 +31,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PostActivity extends NavigationDrawer implements
+public class PostActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, View.OnClickListener {
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
     //All components used for a add post page: =====================================================
     private EditText input_title;
     //EditText input_foodType;
@@ -52,6 +59,13 @@ public class PostActivity extends NavigationDrawer implements
     private Bitmap newPicture;
     private String newDescription;
 
+    /*Navigation Bar essentials*/
+    private DrawerLayout mDrawer;
+    private Toolbar toolbar;
+    private NavigationView nvDrawer;
+
+
+
     //==============================================================================================
 
 
@@ -61,13 +75,28 @@ public class PostActivity extends NavigationDrawer implements
         setContentView(R.layout.activity_post);
 
         //notify users which are required information
-        Toast.makeText(this, "Please fill in all compulsory information (labelled by *)", Toast.LENGTH_SHORT ).show();
+        Toast.makeText(this, "Please fill in all compulsory information (labelled by *)",
+                Toast.LENGTH_SHORT ).show();
+
+//        /*Replace the action bar*/
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+
+        /*Setup for toggle nav bar*/
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        //Nav listener
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+        //Make home visible
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         /*firebaseAuth property*/
         firebaseAuth = FirebaseAuth.getInstance();
+
         /*Get the user*/
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-
         if(firebaseAuth.getCurrentUser() == null){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
@@ -75,6 +104,10 @@ public class PostActivity extends NavigationDrawer implements
 
         /*Get data structure*/
         databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        /*Drawer for Navbar*/
+        // Find our drawer view
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         //link all components: =====================================================================
         input_title = (EditText) findViewById(R.id.titleInput);
@@ -109,21 +142,6 @@ public class PostActivity extends NavigationDrawer implements
         publish = (Button) findViewById(R.id.publish);
         publish.setOnClickListener(this);
         //==========================================================================================
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        return super.onNavigationItemSelected(item);
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -243,5 +261,13 @@ public class PostActivity extends NavigationDrawer implements
         }
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(drawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
