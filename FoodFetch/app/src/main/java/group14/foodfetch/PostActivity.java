@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,10 +33,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PostActivity extends AppCompatActivity implements
-        AdapterView.OnItemSelectedListener, View.OnClickListener {
+        AdapterView.OnItemSelectedListener, View.OnClickListener{
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
     //All components used for a add post page: =====================================================
     private EditText input_title;
     //EditText input_foodType;
@@ -46,7 +49,8 @@ public class PostActivity extends AppCompatActivity implements
     private ImageView showPic;
     private EditText input_description;
     private Button publish;
-    private Button buttonLogout;/*need to be removed*/
+    private Button announcement;
+    private Button logOut;
     private FirebaseAuth firebaseAuth;
 
     /*firebase db essentials*/
@@ -58,11 +62,6 @@ public class PostActivity extends AppCompatActivity implements
     private String newExpiredDate;
     private Bitmap newPicture;
     private String newDescription;
-
-    /*Navigation Bar essentials*/
-    private DrawerLayout mDrawer;
-    private Toolbar toolbar;
-    private NavigationView nvDrawer;
 
 
 
@@ -77,19 +76,22 @@ public class PostActivity extends AppCompatActivity implements
         //notify users which are required information
         Toast.makeText(this, "Please fill in all compulsory information (labelled by *)",
                 Toast.LENGTH_SHORT ).show();
-
-//        /*Replace the action bar*/
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
         /*Setup for toggle nav bar*/
+        toolbar = (Toolbar)findViewById(R.id.action_bar);
+        setSupportActionBar(toolbar);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         //Nav listener
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         //Make home visible
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        /*-------------------------------------------------------------------------------------*/
+        //Navgation view listener setup
+        navigationView = (NavigationView) findViewById(R.id.nav_layout);
+        // Setup drawer view
+        setupDrawerContent(navigationView);
 
 
         /*firebaseAuth property*/
@@ -105,17 +107,11 @@ public class PostActivity extends AppCompatActivity implements
         /*Get data structure*/
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        /*Drawer for Navbar*/
-        // Find our drawer view
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         //link all components: =====================================================================
         input_title = (EditText) findViewById(R.id.titleInput);
 
         //input_foodType = (EditText) findViewById(R.id.foodTypeInput); EditText is changed to spinner
         input_foodType = (Spinner) findViewById(R.id.foodTypeInput);
-
-        buttonLogout = (Button) findViewById(R.id. buttonLogout);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> foodType_adapter = new ArrayAdapter<>(PostActivity.this,
                 android.R.layout.simple_list_item_1,
@@ -130,7 +126,6 @@ public class PostActivity extends AppCompatActivity implements
 
         addPicture = (Button) findViewById(R.id.picInput);
         addPicture.setOnClickListener(this);
-        buttonLogout.setOnClickListener(this);
         //showPicName = (TextView) findViewById(R.id.showPicName);
         //showPicName.setOnClickListener(this);
         showPic = (ImageView) findViewById(R.id.previewPic);
@@ -141,6 +136,9 @@ public class PostActivity extends AppCompatActivity implements
 
         publish = (Button) findViewById(R.id.publish);
         publish.setOnClickListener(this);
+
+//        logOut = (Button) findViewById(R.id.buttonLogout);
+//        logOut.setOnClickListener(this);
         //==========================================================================================
     }
 
@@ -253,11 +251,6 @@ public class PostActivity extends AppCompatActivity implements
             case R.id.publish:
                 addPost(v);
                 break;
-            case R.id.buttonLogout:/*remove it in the future*/
-              //  firebaseAuth.signOut();
-              //  finish();
-                startActivity(new Intent(this, AnnouncementActivity.class));
-                break;
         }
 
 
@@ -269,5 +262,40 @@ public class PostActivity extends AppCompatActivity implements
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /*Drawer content is filled up here*/
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    /*Set up for menu buttons*/
+    public void selectDrawerItem(MenuItem menuItem) {
+        switch(menuItem.getItemId()) {
+            case R.id.navbuttonNewPost:
+                startActivity(new Intent(this, PostActivity.class));
+                break;
+            case R.id.navbuttonAnnouncement:
+                startActivity(new Intent(this, AnnouncementActivity.class));
+                break;
+            case R.id.navbuttonLogout:
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(this, LoginActivity.class));
+                break;
+            default:
+                startActivity(new Intent(this, PostActivity.class));
+        }
+        menuItem.setChecked(true);
+        // Set action bar and close nav drawer
+        setTitle(menuItem.getTitle());
+        drawerLayout.closeDrawers();
     }
 }

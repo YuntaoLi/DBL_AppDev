@@ -26,7 +26,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreen">
+        <activity android:name=".SplashScreen"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +40,6 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/app_name" />
-        android:label="@string/app_name"/>
         <activity
             android:name=".PostActivity"
             android:label="@string/app_name"/>
@@ -47,10 +47,6 @@
         <activity
             android:name=".AnnouncementActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Nav_Base_layout"
-            android:label="@string/title_activity_nav__base_layout"
-            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
