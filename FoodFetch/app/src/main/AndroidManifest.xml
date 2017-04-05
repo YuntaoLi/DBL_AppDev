@@ -47,6 +47,12 @@
         <activity
             android:name=".AnnouncementActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PostOverviewActivity"
+                  android:label="@string/app_name">
+        </activity>
+        <activity android:name=".MyPostsActivity"
+                  android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>

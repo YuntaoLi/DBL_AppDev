@@ -58,7 +58,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
                     finish();
-                    startActivity(new Intent(getApplicationContext(), PostActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MyPostsActivity.class));
+                                                                    //PostActivity.class));
                 }
             }
         };
@@ -178,7 +179,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             registerFB();
         }
         if(v == textViewLogin){
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, MyPostsActivity.class));
+                                        //LoginActivity.class));
         }
     }
 }

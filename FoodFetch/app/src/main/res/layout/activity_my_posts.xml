@@ -14,21 +14,20 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
-        android:text="TextView"
+        android:text="@string/Title_My_Posts"
         android:textSize="32sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/my_posts_title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonLogout"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginEnd="7dp"
         android:layout_marginRight="7dp"
-        android:text="@string/logout_button"
+        android:text="@string/button_logout"
         app:layout_constraintBaseline_toBaselineOf="@+id/list_item_text"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="7dp" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <EditText
         android:id="@+id/text_search"
@@ -39,9 +38,9 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:paddingLeft="10dp"
         android:background="@drawable/border"
-        android:hint="@string/My_Posts_Search_Hint"
+        android:hint="@string/Hint_My_Posts"
+        android:paddingLeft="10dp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
