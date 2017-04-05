@@ -11,6 +11,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -34,21 +35,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class PostOverviewActivity extends ListActivity implements View.OnClickListener {
+public class MyPostsActivity extends ListActivity implements View.OnClickListener {
 
     //list stuff
     private ListView mListView;
     private ArrayList<Post> retrievedPosts;
-    private ArrayList<Donor> retrievedUsers;
     private ArrayList<String> postItems;
     private ArrayAdapter<String> adapter;
     ValueEventListener databaseListener;
+    private final Handler handler = new Handler();
 
     //search
     private EditText searchTextHolder;
@@ -62,6 +62,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     private FirebaseUser currentUser;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mConditionRef;
+    private boolean userIsLoggedIn = false;
 
     //==============================================================================================
 
@@ -69,13 +70,14 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_overview);
+        setContentView(R.layout.activity_my_posts);
 
         firebaseAuthentication(); // make sure user is logged in, else redirect to login
-        componentSetup();
+        /*componentSetup();
         AddSearchListener();
         fillList();
         Log.v("VALUE", Arrays.toString(retrievedPosts.toArray()));
+        */
     }
 
     //==============================================================================================
@@ -92,6 +94,31 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         if (firebaseAuth.getCurrentUser() == null) {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
+        }
+        else {
+            userIsLoggedIn = true; //for testing requirement
+            printLoginStatus();
+            componentSetup();
+            AddSearchListener();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fillList();
+                }
+            }, 5000);
+
+            fillList();
+            Log.v("VALUE", "Retrieved posts should be finished"+Arrays.toString(retrievedPosts.toArray()));
+            Log.v("VALUE", "PostItems should be filled: "+Arrays.toString(postItems.toArray()));
+        }
+    }
+
+    public void printLoginStatus(){
+        if (userIsLoggedIn) {
+            Log.v("VALUE", "userIsLoggedIn: true");
+        }
+        else {
+            Log.v("VALUE", "userIsLoggedIn: false");
         }
     }
 
@@ -114,25 +141,22 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         searchTextHolder = (EditText) findViewById(R.id.text_search);
 
         //Database reference
-        mConditionRef = mRootRef; //refer to current users posts
+        mConditionRef = mRootRef.child(currentUser.getUid() + "/publish"); //refer to current users posts
 
         mConditionRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Donor donor = dataSnapshot.getValue(Donor.class);
-                retrievedUsers.add(donor);
-                for (Donor user1 :retrievedUsers ){
-                    if(user1.isDoner()){
-                        String userID = user1.getUsrid();
-                        Post post = dataSnapshot.child(userID).child("/publish").getValue(Post.class);
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Post post = dataSnapshot.getValue(Post.class);
                         retrievedPosts.add(post);
-                    }
-                }
-                Log.v("VALUE", "OnChildAdded: "+Arrays.toString(retrievedPosts.toArray()));
-            }
+                        Log.v("VALUE", "RetrievedPosts During OnChildAdded: "+Arrays.toString(retrievedPosts.toArray()));
+                        Log.v("VALUE", "PostItems during OnChildAdded: "+Arrays.toString(postItems.toArray()));
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
             }
 
@@ -152,6 +176,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
 
             }
         });
+        Log.v("VALUE", "end of setup"+Arrays.toString(postItems.toArray()));
     }
 
     public void fillList() {
@@ -163,7 +188,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         }
         //Log.v("VALUE", postItems.get(0));
         adapter.notifyDataSetChanged();
-        Log.v("VALUE", "fillList: "+Arrays.toString(retrievedPosts.toArray()));
+        Log.v("VALUE", "happens during fillList: "+Arrays.toString(retrievedPosts.toArray()));
     }
 
 
@@ -176,6 +201,8 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         switch (v.getId()){
             case R.id.buttonLogout:/*remove it in the future*/
                 firebaseAuth.signOut();
+                userIsLoggedIn = false;
+                printLoginStatus();
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
@@ -197,11 +224,13 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
             public void onTextChanged(CharSequence searchQuery, int i, int i1, int i2) {
                 if(searchQuery.toString().equals("")){
                     fillList();
-
+                    Log.v("VALUE", "Happens on equals nothing: "+Arrays.toString(retrievedPosts.toArray()));
+                    Log.v("VALUE", "OnChildAdded: "+Arrays.toString(postItems.toArray()));
                 }
                 else{
                     fillList();
                     searchItem(searchQuery.toString());
+                    Log.v("VALUE", "OnChildAdded: "+Arrays.toString(postItems.toArray()));
                 }
             }
 
@@ -213,16 +242,16 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     }
 
     public void searchItem(String textToSearchFor){
-        Iterator<String> iter = postItems.iterator();
-        while (iter.hasNext()) {
-            String str = iter.next();
+            Iterator<String> iter = postItems.iterator();
+            while (iter.hasNext()) {
+                String str = iter.next();
 
-            if(!str.toLowerCase().contains(textToSearchFor.toLowerCase())) {
+                if(!str.toLowerCase().contains(textToSearchFor.toLowerCase())) {
 
-                iter.remove();
+                    iter.remove();
+                }
             }
-        }
-        adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
     }
 
     //==============================================================================================
@@ -261,6 +290,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
                 mainViewholder.title.setText(getItem(position));
 
             }
+                Log.v("VALUE", "");
                 return convertView;
         }
     }
