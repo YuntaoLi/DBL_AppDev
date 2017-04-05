@@ -45,7 +45,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     //list stuff
     private ListView mListView;
     private ArrayList<Post> retrievedPosts;
-    private ArrayList<Donor> retrievedUsers;
+    private ArrayList<User> retrievedDonors;
     private ArrayList<String> postItems;
     private ArrayAdapter<String> adapter;
     ValueEventListener databaseListener;
@@ -119,15 +119,16 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         mConditionRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Donor donor = dataSnapshot.getValue(Donor.class);
-                retrievedUsers.add(donor);
-                for (Donor user1 :retrievedUsers ){
-                    if(user1.isDoner()){
-                        String userID = user1.getUsrid();
-                        Post post = dataSnapshot.child(userID).child("/publish").getValue(Post.class);
-                        retrievedPosts.add(post);
-                    }
+                User user = dataSnapshot.getValue(User.class);
+                if (user.isDoner()) { //therefore: retrievedDonors
+                    retrievedDonors.add(user);
                 }
+                for (User user1 :retrievedDonors ){
+                    String userID = user1.getUsrid();
+                    Post post = dataSnapshot.child(userID).child("/publish").getValue(Post.class);
+                    retrievedPosts.add(post);
+                }
+
                 Log.v("VALUE", "OnChildAdded: "+Arrays.toString(retrievedPosts.toArray()));
             }
 

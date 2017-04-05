@@ -99,7 +99,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if(task.isSuccessful()){
                     finish();
                     //goto Corresponding page
-                    startActivity(new Intent(getApplicationContext(), PostActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MyPostsActivity.class));
+                                                                      //PostActivity.class));
                 }
                 else{
                     Toast.makeText(RegisterActivity.this, "Failed, Try again.", Toast.LENGTH_LONG)
