@@ -47,12 +47,10 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
     private ArrayList<Post> retrievedPosts;
     private ArrayList<String> postItems;
     private ArrayAdapter<String> adapter;
-    ValueEventListener databaseListener;
-    private final Handler handler = new Handler();
+    private final Handler handler = new Handler(); //to fix thé bug maybe
 
     //search
     private EditText searchTextHolder;
-    private ArrayList<String> tempSearchArray;
 
     //logout
     private Button buttonLogout;/*need to be removed*/
@@ -62,7 +60,7 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
     private FirebaseUser currentUser;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mConditionRef;
-    private boolean userIsLoggedIn = false;
+    private boolean userIsLoggedIn = false; //for testing requirements
 
     //==============================================================================================
 
@@ -73,11 +71,12 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
         setContentView(R.layout.activity_my_posts);
 
         firebaseAuthentication(); // make sure user is logged in, else redirect to login
-        /*componentSetup();
+        componentSetup();
         AddSearchListener();
         fillList();
         Log.v("VALUE", Arrays.toString(retrievedPosts.toArray()));
-        */
+        Log.v("VALUE", "Retrieved posts should be finished"+Arrays.toString(retrievedPosts.toArray()));
+        Log.v("VALUE", "PostItems should be filled: "+Arrays.toString(postItems.toArray()));
     }
 
     //==============================================================================================
@@ -97,25 +96,14 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
         }
         else {
             userIsLoggedIn = true; //for testing requirement
-            printLoginStatus();
-            componentSetup();
-            AddSearchListener();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    fillList();
-                }
-            }, 5000);
-
-            fillList();
-            Log.v("VALUE", "Retrieved posts should be finished"+Arrays.toString(retrievedPosts.toArray()));
-            Log.v("VALUE", "PostItems should be filled: "+Arrays.toString(postItems.toArray()));
         }
+        printLoginStatus();
     }
 
     public void printLoginStatus(){
         if (userIsLoggedIn) {
             Log.v("VALUE", "userIsLoggedIn: true");
+            Log.v("VALUE", "Current User ID: "+currentUser.getUid());
         }
         else {
             Log.v("VALUE", "userIsLoggedIn: false");
@@ -191,7 +179,20 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
         Log.v("VALUE", "happens during fillList: "+Arrays.toString(retrievedPosts.toArray()));
     }
 
-
+    public void possibleBugFixer(){ //change searchText in a delayed fashion to sync with Database?
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                searchTextHolder.setText("/");
+            }
+        }, 4000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                searchTextHolder.setText("");
+            }
+        }, 4000);
+    }
 
     //==============================================================================================
     //button clicking
