@@ -5,6 +5,7 @@ package group14.foodfetch;
  * This Activity shows the foodbank all the available posts
  * and allows them to use search between all the posts
  * by typing a keyword in the search bar
+ * additional line for testing PULL
  */
 
 import android.app.ListActivity;
