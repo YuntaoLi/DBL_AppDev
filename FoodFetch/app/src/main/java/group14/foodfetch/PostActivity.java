@@ -223,9 +223,24 @@ public class PostActivity extends AppCompatActivity implements
             }
 
             pushToDatabase(newPost);   //pushToDatabase is used here to upload the newPost
+            backToInitial(date_today);  //page will back to empty
         }
     }
 
+
+    public void backToInitial(Date today){
+        input_title.setText("");
+        input_foodType.setSelection(0);
+
+        int year = Integer.parseInt(new SimpleDateFormat("yyyy").format(today));
+        int month = Integer.parseInt(new SimpleDateFormat("MM").format(today));
+        int day = Integer.parseInt(new SimpleDateFormat("dd").format(today));
+
+        input_expiredDate.updateDate(year, month -1, day);
+        newPicture = null;
+        showPic.setImageBitmap(newPicture);
+        input_description.setText("");
+    }
     /**
      * A function push the newPost to database, will be used in addPost()
      *

@@ -181,7 +181,18 @@ public class AnnouncementActivity extends AppCompatActivity implements
             }
 
             pushToDatabase(newAnnouncement);   //pushToDatabase is used here to upload the newPost
+
+            backToInitial(); //page will back to empty
         }
+    }
+
+    public void backToInitial(){
+        input_title.setText("");
+        input_foodType.setSelection(0);
+
+        newPicture = null;
+        showPic.setImageBitmap(newPicture);
+        input_description.setText("");
     }
 
     /**
