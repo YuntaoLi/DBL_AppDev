@@ -8,6 +8,10 @@ import android.graphics.Bitmap;
  */
 public class Post extends Publish{
 
+    public Post (){
+
+    }
+
     //constructors:---------------------------------------------------------------------------------
     public Post(String title, String foodType, String expiredDate){
         setTitle(title);

@@ -39,6 +39,11 @@
         <item>Dairy</item>
     </string-array>
     <string name="title_activity_nav__base_layout">Nav_Base_layout</string>
+    <string name="button_logout">Logout</string>
+    <string name="Hint_My_Posts">Search My Posts..</string>
+    <string name="Title_My_Posts">My Posts</string>
+    <string name="Title_Overview">Post Overview</string>
+    <string name="Hint_Post_Overview">Search All Posts..</string>
 
 
 </resources>

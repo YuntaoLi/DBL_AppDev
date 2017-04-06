@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/button1"
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navbuttonNewPost"
+        android:icon="@mipmap/ic_note_add_black_24dp"
         android:title="New Post" />
-    <item android:id="@+id/button2"
+    <item android:id="@+id/navbuttonMyPost"
+        android:icon="@mipmap/ic_history_black_24dp"
         android:title="My Posts" />
-    <item android:id="@+id/button3"
+    <item android:id="@+id/navbuttonAnnouncement"
+        android:icon="@mipmap/ic_announcement_black_24dp"
         android:title="Announcements" />
-    <item android:id="@+id/button4"
+    <item android:id="@+id/navbuttonSettings"
+        android:icon="@mipmap/ic_settings_black_24dp"
         android:title="Settings" />
-    <item android:id="@+id/button5"
+    <item android:id="@+id/navbuttonLogout"
+        android:icon="@mipmap/ic_exit_to_app_black_24dp"
         android:title="Logout" />
 </menu>
