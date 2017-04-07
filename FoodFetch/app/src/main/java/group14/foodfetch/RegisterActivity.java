@@ -180,8 +180,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             registerFB();
         }
         if(v == textViewLogin){
-            startActivity(new Intent(this, MyPostsActivity.class));
-                                        //LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
+                                        //MyPostsActivity.class));
         }
     }
 }
