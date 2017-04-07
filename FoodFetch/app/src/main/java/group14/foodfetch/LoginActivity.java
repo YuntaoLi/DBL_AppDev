@@ -2,7 +2,9 @@ package group14.foodfetch;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -24,11 +26,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextPassword;
     private Button buttonLogin;
     private TextView textViewRegister;
-    private ProgressDialog pDialog;
     /*FireBase utilities*/
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener aListener;
-
+    private Handler handler = new Handler();
+    private TaskTimer taskTimer;
+    private ProgressDialog pDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,34 +72,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /*Login function*/
     private void login(){
-        /*User credentials */
+//        /*User credentials */
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
-
-        /*If the email is valid*/
-        if(!emailChecker(email)){
-            Toast.makeText(this, "Please input a valid email",
-                    Toast.LENGTH_LONG).show();
-            return;//halt
-        }
-        /*If the pw is valid*/
-        if(!pwChecker(password)){
-            Toast.makeText(this, "Please fill your password and make sure there are " +
-                            "6 characters at least",
-                    Toast.LENGTH_LONG).show();
-            return;//halt
-        }
-
-        /*Processing by showing the progress*/
-        pDialog.setMessage("Processing, please wait for a moment");
-        pDialog.show();
-
-        /*Login via auth*/
         firebaseAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        pDialog.dismiss();
+//                        pDialog.dismiss();
                         if(task.isSuccessful()){
                             finish();
                             startActivity(new Intent(getApplicationContext(),
@@ -107,8 +90,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Toast.LENGTH_LONG).show();
                         }
                     }
-                });
-    }
+                });}
 
     /*Check if the email field is empty and if the format is correct*/
     public boolean emailChecker(String email){
@@ -124,13 +106,73 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if(v == buttonLogin){
-            login();
+            /*User credentials */
+            String email = editTextEmail.getText().toString().trim();
+            String password = editTextPassword.getText().toString().trim();
+
+            /*If the email is valid*/
+            if(!emailChecker(email)){
+                Toast.makeText(this, "Please input a valid email",
+                        Toast.LENGTH_LONG).show();
+                return;//halt
+            }
+            /*If the pw is valid*/
+            if(!pwChecker(password)){
+                Toast.makeText(this, "Please fill your password and make sure there are " +
+                                "6 characters at least",
+                        Toast.LENGTH_LONG).show();
+                return;//halt
+            }
+            //Now, open a new task and new delayer, holding on the session up to 60s.
+            //After 60s, halt the process and return an err msg
+            LoginTask loginTask = new LoginTask(LoginActivity.this,pDialog);
+            taskTimer = new TaskTimer(loginTask);
+            handler.postDelayed(taskTimer, 1*1000);
+            loginTask.execute();
         }
         if(v == textViewRegister){
             /*Close this page*/
             finish();
             /*Goto register page*/
             startActivity(new Intent(this, RegisterActivity.class));
+        }
+    }
+
+    public class LoginTask extends AsyncTask<Void,Void,Boolean>{
+        private ProgressDialog pDialog;
+        private AppCompatActivity activity;
+
+        public LoginTask(AppCompatActivity activity, ProgressDialog pDialog) {
+            this.activity = activity;
+            this.pDialog = pDialog;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            pDialog.setMessage("Processing, please wait for a moment");
+            pDialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try{
+                login();
+                return true;
+            }catch (Exception e){return false;}
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            super.onPostExecute(success);
+            if(pDialog.isShowing()){
+                pDialog.dismiss();
+            }
+            if (success) {
+                Toast.makeText(activity, "You are logged in", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(activity, "Error, please try it again", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
