@@ -71,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         aListener = new FirebaseAuth.AuthStateListener(){
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+<<<<<<< HEAD
                 if(firebaseAuth.getCurrentUser() != null){
                     finish();
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -96,6 +97,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         }
                     });
                 }
+=======
+//                if(firebaseAuth.getCurrentUser() != null){
+//                    finish();
+//                    startActivity(new Intent(// MyPostsActivity.class));
+//                                                                    PostActivity.class));
+
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+//                }
+>>>>>>> 0b1ee7d14cd167500538df030ed12dacf27038de
             }
         };
         
@@ -229,7 +239,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
         if (v == textViewLogin) {
             startActivity(new Intent(this, LoginActivity.class));
-            //MyPostsActivity.class));
         }
     }
 }

@@ -99,6 +99,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart(){
         super.onStart();
         firebaseAuth.addAuthStateListener(aListener);
+
+
     }
     
     /*Login function*/

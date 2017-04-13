@@ -1,5 +1,8 @@
 package group14.foodfetch;
 
+import android.support.v4.app.DialogFragment;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -21,6 +24,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class PostActivity extends AppCompatActivity implements
@@ -86,6 +91,8 @@ public class PostActivity extends AppCompatActivity implements
         drawerToggle.syncState();
         //Make home visible
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //Date picker dialog
+        SelectedDateView = (TextView) findViewById(R.id.selected_date2);
 
         /*-------------------------------------------------------------------------------------*/
         //Navgation view listener setup
@@ -121,9 +128,9 @@ public class PostActivity extends AppCompatActivity implements
         // Apply the adapter to the spinner
         input_foodType.setAdapter(foodType_adapter);
         input_foodType.setOnItemSelectedListener(this);
-
+/*
         input_expiredDate = (DatePicker) findViewById(R.id.expiredDateInput);
-
+*/
         addPicture = (Button) findViewById(R.id.picInput);
         addPicture.setOnClickListener(this);
         //showPicName = (TextView) findViewById(R.id.showPicName);
@@ -175,6 +182,35 @@ public class PostActivity extends AppCompatActivity implements
             showPic.setImageBitmap(newPicture);
         }
     }
+    /*-----------------Date Picker Dialog-------------------------------*/
+    public static TextView SelectedDateView;
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(),android.R.style.Theme_Holo_Light_Dialog,this, year,month, day);
+            dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            return dialog;
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            SelectedDateView.setText("Selected Date: " + (month + 1) + "/" + day + "/" + year);
+        }
+    }
+
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+    /*------------------------------------------------------------*/
 
     /**all information should be saved after submit button is on clicked
      */
@@ -183,12 +219,10 @@ public class PostActivity extends AppCompatActivity implements
         //get the input contents:
         newTitle = input_title.getText().toString();
         newFoodType = input_foodType.getSelectedItem().toString();
-
-        int newExpiredDate_year = input_expiredDate.getYear();
-        int newExpiredDate_month = input_expiredDate.getMonth() + 1;  //since month in Date Picker starts from 0
-        int newExpiredDate_date = input_expiredDate.getDayOfMonth();
-        newExpiredDate = newExpiredDate_year + "/" + newExpiredDate_month + "/" + newExpiredDate_date;
-
+        //trimming the date from picker
+        String test = SelectedDateView.getText().toString();
+        String test2 = test.replace("Selected Date: ", "");
+        newExpiredDate = test2;
         newDescription = input_description.getText().toString();
 
 
@@ -197,8 +231,7 @@ public class PostActivity extends AppCompatActivity implements
         Date date_today = new Date();
 
 
-
-        if(newTitle.matches("") || newFoodType.matches("Select Food Type *") || newExpiredDate.compareTo(dateFormat_date.format(date_today)) < 0){
+        if(newTitle.matches("") || newFoodType.matches("Select Food Type *")){
 
             Toast.makeText(this, "Please fill in correct title / food type / expired date for your post", Toast.LENGTH_SHORT ).show();
 
@@ -219,8 +252,19 @@ public class PostActivity extends AppCompatActivity implements
             }
 
             pushToDatabase(newPost);   //pushToDatabase is used here to upload the newPost
+            backToInitial(date_today);  //page will back to empty
         }
     }
+
+
+    public void backToInitial(Date today){
+        input_title.setText("");
+        input_foodType.setSelection(0);
+        SelectedDateView.setText("");
+        newPicture = null;
+        showPic.setImageBitmap(newPicture);
+        input_description.setText("");
+        }
 
     /**
      * A function push the newPost to database, will be used in addPost()

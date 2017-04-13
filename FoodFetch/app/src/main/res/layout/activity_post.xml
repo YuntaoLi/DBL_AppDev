@@ -9,168 +9,239 @@
     tools:openDrawer="start">
 
     <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--xmlns:tools="http://schemas.android.com/tools"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:paddingBottom="@dimen/activity_vertical_margin"-->
-        <!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
-        <!--android:paddingRight="@dimen/activity_horizontal_margin"-->
-        <!--android:paddingTop="@dimen/activity_vertical_margin">-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:orientation="vertical"
-            android:weightSum="1">
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:paddingBottom="@dimen/activity_vertical_margin"-->
+    <!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
+    <!--android:paddingRight="@dimen/activity_horizontal_margin"-->
+    <!--android:paddingTop="@dimen/activity_vertical_margin">-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-            <include layout="@layout/action_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+        <include
+            layout="@layout/action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/mFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.09"
+            android:orientation="vertical"
+            android:weightSum="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
 
             <LinearLayout
-                android:id="@+id/mFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.01"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/titleInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/squareborder"
+                    android:hint="Title *"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.06"
                 android:orientation="vertical"
                 android:weightSum="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.06"
-                    android:orientation="vertical"
-                    android:weightSum="1">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@drawable/squareborder"
+                    >
 
-                    <EditText
-                        android:id="@+id/titleInput"
-                        android:layout_width="269dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:hint="Title *" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.06"
-                    android:orientation="vertical"
-                    android:weightSum="1">
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_weight="1"
+                        android:text="Food Type*"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                     <Spinner
                         android:id="@+id/foodTypeInput"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="187dp"
+                        android:layout_height="match_parent" />
 
-                    <!--android:contextClickable="false" -->
-                    <!--/>-->
                 </LinearLayout>
+
+                <!--android:contextClickable="false" -->
+                <!--/>-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.06"
+                android:orientation="vertical"
+                android:weightSum="1"
+                android:background="@drawable/squareborder">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.06"
-                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
                     android:weightSum="1">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:layout_width="296dp"
+                        android:layout_height="64dp"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/textView"
                             android:layout_width="wrap_content"
-                            android:layout_height="56dp"
-                            android:text="Expired date *:" />
+                            android:layout_height="32dp"
+                            android:onClick="showDatePickerDialog"
+                            android:text="Click to select an expiry date *"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-                        <DatePicker
-                            android:id="@+id/expiredDateInput"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:layout_weight="1"
-                            android:animationCache="false"
-                            android:calendarViewShown="false"
-                            android:datePickerMode="spinner"
-                            android:fadeScrollbars="true"
-                            android:yearListItemTextAppearance="@style/TextAppearance.AppCompat" />
-                    </LinearLayout>
-
-                    <!--android:contextClickable="false"-->
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.13"
-                    android:orientation="vertical"
-                    android:weightSum="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_weight="3.85">
-
-                        <Button
-                            android:id="@+id/picInput"
-                            style="?android:attr/buttonStyleSmall"
-                            android:layout_width="157dp"
+                        <TextView
+                            android:id="@+id/selected_date2"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:onClick="onClick"
-                            android:paddingLeft="3px"
-                            android:text="choose picture" />
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/button"
+                            android:text=""
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-                        <ImageView
-                            android:id="@+id/previewPic"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            />
-                        <!--app:srcCompat="@android:color/transparent"-->
                     </LinearLayout>
 
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="54dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/ic_menu_my_calendar"
+                        android:onClick="showDatePickerDialog" />
+
                 </LinearLayout>
+
+                <!--android:contextClickable="false"-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="1"
+                android:background="@drawable/squareborder">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.57"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/descriptionInput"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.05"
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.65"
                         android:ems="10"
-                        android:hint="Description"
-                        android:inputType="textMultiLine" />
+                        android:inputType="none"
+                        android:onClick="onClick"
+                        android:text="Click the camera to add a picture"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <Button
+                        android:id="@+id/picInput"
+                        android:layout_width="47dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_menu_camera"
+                        android:onClick="onClick"
+                        android:paddingLeft="3px" />
+
+                    <!--app:srcCompat="@android:color/transparent"-->
                 </LinearLayout>
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/publish"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:onClick="onClick"
-                android:text="Publish" />
+                android:orientation="vertical"
+                android:background="@drawable/squareborder"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="0.23">
+
+                    <EditText
+                        android:id="@+id/descriptionInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Description"
+                        android:inputType="textMultiLine"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <android.support.design.widget.NavigationView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/nav_layout"
-            app:menu="@menu/navigation_menu"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/navheader">
-        </android.support.design.widget.NavigationView>
+        <ImageView
+            android:id="@+id/previewPic"
+            android:layout_width="match_parent"
+            android:layout_height="103dp"
+            android:layout_weight="0.48" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_weight="0.30" />
+
+        <Button
+            android:id="@+id/publish"
+            style="@android:style/Widget.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.15"
+            android:background="#FF4081"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:text="Publish"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:visibility="visible"
+        app:headerLayout="@layout/navheader"
+        app:menu="@menu/navigation_menu"></android.support.design.widget.NavigationView>
     <!--</RelativeLayout>-->
 </android.support.v4.widget.DrawerLayout>
 
