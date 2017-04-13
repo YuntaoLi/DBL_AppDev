@@ -121,14 +121,14 @@ public class AnnouncementActivity extends AppCompatActivity implements
         input_foodType.setOnItemSelectedListener(this);
 
 
-
+/*
         addPicture = (Button) findViewById(R.id.picInput);
         addPicture.setOnClickListener(this);
         //showPicName = (TextView) findViewById(R.id.showPicName);
         //showPicName.setOnClickListener(this);
         showPic = (ImageView) findViewById(R.id.previewPic);
         //showPic.setOnClickListener(this);
-
+*/
 
         input_description = (EditText) findViewById(R.id.descriptionInput);
 
@@ -154,7 +154,7 @@ public class AnnouncementActivity extends AppCompatActivity implements
      * function for button add Picture:
      * when button add picture is clicked, the application should provide a picture for user to pick
      */
-
+/*
     public void addPicture(View v) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -162,7 +162,7 @@ public class AnnouncementActivity extends AppCompatActivity implements
         }
 
     }
-
+*/
     //cannot test since there is an empty gallery in model phone
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -201,11 +201,11 @@ public class AnnouncementActivity extends AppCompatActivity implements
             if (!newDescription.matches("")) {
                 newAnnouncement.setDescription(newDescription);
             }
-
+/*
             if (newPicture != null){
                 newAnnouncement.setFoodPic(newPicture);
             }
-
+*/
             pushToDatabase(newAnnouncement);   //pushToDatabase is used here to upload the newPost
 
             backToInitial(); //page will back to empty
@@ -215,9 +215,10 @@ public class AnnouncementActivity extends AppCompatActivity implements
     public void backToInitial(){
         input_title.setText("");
         input_foodType.setSelection(0);
-
+/*
         newPicture = null;
         showPic.setImageBitmap(newPicture);
+*/
         input_description.setText("");
     }
 
@@ -242,9 +243,11 @@ public class AnnouncementActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            /*
             case  R.id.picInput:
                 addPicture(v);
                 break;
+                */
             case R.id.publish:
                 addPost(v);
                 break;
