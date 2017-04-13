@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Handler handler = new Handler();
     private TaskTimer taskTimer;
     private ProgressDialog pDialog;
+    private DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         firebaseAuth.addAuthStateListener(aListener);
     }
 
+    public boolean isDoner(User usr){
+        databaseReference.orderByChild("doner").addChildEventListener();
+        return true;
+    }
     /*Login function*/
     private void login(){
 //        /*User credentials */
@@ -79,8 +85,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-//                        pDialog.dismiss();
                         if(task.isSuccessful()){
+
                             finish();
                             startActivity(new Intent(getApplicationContext(),
                                     PostActivity.class));
