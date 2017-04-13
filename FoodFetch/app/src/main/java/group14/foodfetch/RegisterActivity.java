@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     
     /*Widgets*/
@@ -36,7 +37,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener aListener;
     private DatabaseReference databaseReference;
-
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +109,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 pDialog.dismiss();
                 if(task.isSuccessful()){
                     finish();
-
                     FirebaseUser usr = firebaseAuth.getCurrentUser();
                     databaseReference.child(usr.getUid()).setValue(newUser);
                     // goto Corresponding page
                     startActivity(new Intent(getApplicationContext(), PostActivity.class));
-
                 }
                 else{
                     Toast.makeText(RegisterActivity.this, "Failed, Try again.", Toast.LENGTH_LONG)
@@ -196,7 +194,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if(v == buttonRegisterDonor){
-            newUser = new Donor();
             registerDonor();
         }
         if(v == buttonRegisterFB){

@@ -71,11 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
         firebaseAuth.addAuthStateListener(aListener);
     }
-
-    public boolean isDoner(User usr){
-        databaseReference.orderByChild("doner").addChildEventListener();
-        return true;
-    }
+    
     /*Login function*/
     private void login(){
 //        /*User credentials */
