@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     
@@ -29,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     /*FireBase utilities*/
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener aListener;
+    private DatabaseReference databaseReference;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +100,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 pDialog.dismiss();
                 if(task.isSuccessful()){
                     finish();
-                    //goto Corresponding page
                     startActivity(new Intent(getApplicationContext(), MyPostsActivity.class));
                                                                       //PostActivity.class));
                 }
@@ -173,15 +174,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if(v == buttonRegisterDonor){
+        if (v == buttonRegisterDonor) {
             registerDonor();
         }
-        if(v == buttonRegisterFB){
+        if (v == buttonRegisterFB) {
             registerFB();
         }
-        if(v == textViewLogin){
+        if (v == textViewLogin) {
             startActivity(new Intent(this, LoginActivity.class));
-                                        //MyPostsActivity.class));
+            //MyPostsActivity.class));
         }
     }
 }
