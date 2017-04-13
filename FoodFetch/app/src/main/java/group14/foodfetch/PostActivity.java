@@ -137,8 +137,6 @@ public class PostActivity extends AppCompatActivity implements
         publish = (Button) findViewById(R.id.publish);
         publish.setOnClickListener(this);
 
-//        logOut = (Button) findViewById(R.id.buttonLogout);
-//        logOut.setOnClickListener(this);
         //==========================================================================================
     }
 

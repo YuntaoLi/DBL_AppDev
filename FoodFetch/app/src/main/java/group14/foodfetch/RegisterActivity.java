@@ -18,9 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
+import com.google.firebase.database.ValueEventListener;
 
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
@@ -69,11 +71,31 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         aListener = new FirebaseAuth.AuthStateListener(){
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                if(firebaseAuth.getCurrentUser() != null){
-//                    finish();
-//                    startActivity(new Intent(getApplicationContext(),// MyPostsActivity.class));
-//                                                                    PostActivity.class));
-//                }
+                if(firebaseAuth.getCurrentUser() != null){
+                    finish();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    FirebaseUser usr = firebaseAuth.getCurrentUser();
+                    DatabaseReference databaseReference =
+                            database.getReference("/" + usr.getUid());
+                    databaseReference.child("doner").addValueEventListener(new ValueEventListener(){
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String type = dataSnapshot.getValue().toString();
+                            if(type.toLowerCase().equals("true")) {
+                                startActivity(new Intent(getApplicationContext(),
+                                        PostActivity.class));
+                            }
+                            else{
+                                startActivity(new Intent(getApplicationContext(),
+                                        MyPostsActivity.class));
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
             }
         };
         

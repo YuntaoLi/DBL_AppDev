@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -18,7 +19,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -60,7 +66,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
                     finish();
-                    startActivity(new Intent(getApplicationContext(), PostActivity.class));
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    FirebaseUser usr = firebaseAuth.getCurrentUser();
+                    DatabaseReference databaseReference =
+                            database.getReference("/" + usr.getUid());
+                    databaseReference.child("doner").addValueEventListener(new ValueEventListener(){
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String type = dataSnapshot.getValue().toString();
+                            if(type.toLowerCase().equals("true")) {
+                                /*if a donor, go to donor activity*/
+                                startActivity(new Intent(getApplicationContext(),
+                                        PostActivity.class));
+                            }
+                            else{
+                                /*if a fb, go to fb activity*/
+                                startActivity(new Intent(getApplicationContext(),
+                                        MyPostsActivity.class));
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
         };
@@ -82,10 +111,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-
                             finish();
-                            startActivity(new Intent(getApplicationContext(),
-                                    PostActivity.class));
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            FirebaseUser usr = firebaseAuth.getCurrentUser();
+                            DatabaseReference databaseReference =
+                                    database.getReference("/" + usr.getUid());
+                            databaseReference.child("doner").addValueEventListener(new ValueEventListener(){
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String type = dataSnapshot.getValue().toString();
+                                    if(type.toLowerCase().equals("true")) {
+                                        startActivity(new Intent(getApplicationContext(),
+                                                PostActivity.class));
+                                    }
+                                    else{
+                                        startActivity(new Intent(getApplicationContext(),
+                                                MyPostsActivity.class));
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
                         }
                         else{
                             Toast.makeText(LoginActivity.this, "Failed, Try again.",
@@ -99,6 +148,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return !(TextUtils.isEmpty(email) ||
                 !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches());
     }
+
+
+
+//    public class FetchedUser
+//    {
+//        public boolean doner;
+//
+//        public FetchedUser(){}
+//
+//        public FetchedUser(boolean doner) {
+//            this.doner = doner;
+//        }
+//
+//        public void setDoner(boolean doner) {
+//
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return "user is donor: " + doner;
+//        }
+//    }
 
     /*Check if the password field is empty and if it is at 6 characters*/
     public boolean pwChecker(String password){
