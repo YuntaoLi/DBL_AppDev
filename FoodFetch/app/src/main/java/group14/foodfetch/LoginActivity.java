@@ -171,7 +171,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 pDialog.dismiss();
             }
             if (success) {
-                Toast.makeText(activity, "You are logged in", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity, "You are logged in", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(activity, "Error, please try it again", Toast.LENGTH_LONG).show();
             }

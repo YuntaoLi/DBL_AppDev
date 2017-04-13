@@ -17,9 +17,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+<<<<<<< HEAD
+import com.google.firebase.database.DatabaseReference;
+=======
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+>>>>>>> c463a84fd83cb83a059004df956022d07253c549
 
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
@@ -37,6 +41,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener aListener;
     private DatabaseReference databaseReference;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> c463a84fd83cb83a059004df956022d07253c549
+>>>>>>> 07dc5d67f911470bec57b92cf46cadc2229be7eb
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,10 +120,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 pDialog.dismiss();
                 if(task.isSuccessful()){
                     finish();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+                    startActivity(new Intent(getApplicationContext(), MyPostsActivity.class));
+                                                                      //PostActivity.class));
+=======
+
+>>>>>>> 07dc5d67f911470bec57b92cf46cadc2229be7eb
                     FirebaseUser usr = firebaseAuth.getCurrentUser();
                     databaseReference.child(usr.getUid()).setValue(newUser);
                     // goto Corresponding page
                     startActivity(new Intent(getApplicationContext(), PostActivity.class));
+<<<<<<< HEAD
+=======
+
+>>>>>>> c463a84fd83cb83a059004df956022d07253c549
+>>>>>>> 07dc5d67f911470bec57b92cf46cadc2229be7eb
                 }
                 else{
                     Toast.makeText(RegisterActivity.this, "Failed, Try again.", Toast.LENGTH_LONG)
@@ -193,15 +217,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
+<<<<<<< HEAD
+        if (v == buttonRegisterDonor) {
+=======
         if(v == buttonRegisterDonor){
+<<<<<<< HEAD
+=======
+            newUser = new Donor();
+>>>>>>> c463a84fd83cb83a059004df956022d07253c549
+>>>>>>> 07dc5d67f911470bec57b92cf46cadc2229be7eb
             registerDonor();
         }
-        if(v == buttonRegisterFB){
+        if (v == buttonRegisterFB) {
             registerFB();
         }
-        if(v == textViewLogin){
+        if (v == textViewLogin) {
             startActivity(new Intent(this, LoginActivity.class));
-                                        //MyPostsActivity.class));
+            //MyPostsActivity.class));
         }
     }
 }
