@@ -282,6 +282,9 @@ public class AnnouncementActivity extends AppCompatActivity implements
             case R.id.navbuttonNewPost:
                 startActivity(new Intent(this, PostActivity.class));
                 break;
+            case R.id.navbuttonMyPost:
+                startActivity(new Intent(this, MyPostsActivity.class));
+                break;
             case R.id.navbuttonAnnouncement:
                 startActivity(new Intent(this, AnnouncementActivity.class));
                 break;
