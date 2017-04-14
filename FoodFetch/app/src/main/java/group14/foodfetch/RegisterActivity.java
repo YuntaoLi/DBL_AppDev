@@ -198,7 +198,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             databaseReference.child(usr.getUid()).setValue(newUser);
                             //goto Corresponding page
                             startActivity(new Intent(getApplicationContext(),
-                                    MyPostsActivity.class));
+                                    AnnouncementActivity.class));//replace to postoverview
 
                         }
                         else{

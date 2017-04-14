@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/navbuttonPostOv"
+    android:icon="@mipmap/ic_note_add_black_24dp"
+    android:title="Post Overview" />
+<item android:id="@+id/navbuttonNewAnnouncement"
+    android:icon="@mipmap/ic_announcement_black_24dp"
+    android:title="New Announcement" />
+<item android:id="@+id/navbuttonLogout"
+    android:icon="@mipmap/ic_exit_to_app_black_24dp"
+    android:title="Logout" />
+</menu>

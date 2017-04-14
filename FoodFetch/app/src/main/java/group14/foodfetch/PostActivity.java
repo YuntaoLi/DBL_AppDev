@@ -328,7 +328,7 @@ public class PostActivity extends AppCompatActivity implements
                 startActivity(new Intent(this, MyPostsActivity.class));
                 break;
             case R.id.navbuttonAnnouncement:
-                startActivity(new Intent(this, AnnouncementActivity.class));
+                startActivity(new Intent(this, AnnouncementActivity.class));//Replace to the ann. overview
                 break;
             case R.id.navbuttonLogout:
                 firebaseAuth.signOut();

@@ -280,10 +280,7 @@ public class AnnouncementActivity extends AppCompatActivity implements
     public void selectDrawerItem(MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.navbuttonNewPost:
-                startActivity(new Intent(this, PostActivity.class));
-                break;
-            case R.id.navbuttonMyPost:
-                startActivity(new Intent(this, MyPostsActivity.class));
+                startActivity(new Intent(this, PostActivity.class));//Replace to postoverview
                 break;
             case R.id.navbuttonAnnouncement:
                 startActivity(new Intent(this, AnnouncementActivity.class));
@@ -294,7 +291,7 @@ public class AnnouncementActivity extends AppCompatActivity implements
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
             default:
-                startActivity(new Intent(this, PostActivity.class));
+                startActivity(new Intent(this, AnnouncementActivity.class));
         }
         menuItem.setChecked(true);
         // Set action bar and close nav drawer

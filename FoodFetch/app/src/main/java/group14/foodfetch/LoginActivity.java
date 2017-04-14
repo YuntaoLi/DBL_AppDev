@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     }
                                     else{
                                         startActivity(new Intent(getApplicationContext(),
-                                                MyPostsActivity.class));
+                                                AnnouncementActivity.class));//replace to postoverview
                                     }
                                 }
                                 @Override
