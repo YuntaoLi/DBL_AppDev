@@ -230,8 +230,8 @@ public class PostActivity extends AppCompatActivity implements
         DateFormat dateFormat_date = new SimpleDateFormat("yyyy/MM/dd");
         Date date_today = new Date();
 
-
-        if(newTitle.matches("") || newFoodType.matches("Select Food Type *")||newExpiredDate.matches("")){
+        System.out.println(newFoodType);
+        if(newTitle.matches("") || newFoodType.matches("chooseType")||newExpiredDate.matches("")){
 
             Toast.makeText(this, "Please fill in correct title / food type / expired date for your post", Toast.LENGTH_SHORT ).show();
 
