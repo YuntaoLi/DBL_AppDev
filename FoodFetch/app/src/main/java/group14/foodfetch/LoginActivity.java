@@ -123,10 +123,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     String type = dataSnapshot.getValue().toString();
                                     if(type.toLowerCase().equals("true")) {
+                                        System.out.println("userIsLoggedIn = true");
                                         startActivity(new Intent(getApplicationContext(),
                                                 PostActivity.class));
                                     }
                                     else{
+                                        System.out.println("userIsLoggedIn = true");
                                         startActivity(new Intent(getApplicationContext(),
                                                 AnnouncementActivity.class));//replace to postoverview
                                     }
