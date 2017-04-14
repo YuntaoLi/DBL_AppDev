@@ -71,34 +71,37 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         aListener = new FirebaseAuth.AuthStateListener(){
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null){
-                    finish();
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    FirebaseUser usr = firebaseAuth.getCurrentUser();
-                    DatabaseReference databaseReference =
-                            database.getReference("/" + usr.getUid());
-                    databaseReference.child("doner").addValueEventListener(new ValueEventListener(){
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String type = dataSnapshot.getValue().toString();
-                            if(type.toLowerCase().equals("true")) {
-                                startActivity(new Intent(getApplicationContext(),
-                                        PostActivity.class));
-                            }
-                            else{
-                                startActivity(new Intent(getApplicationContext(),
-                                        MyPostsActivity.class));
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
-                }
             }
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                if(firebaseAuth.getCurrentUser() != null){
+//                    finish();
+//                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                    FirebaseUser usr = firebaseAuth.getCurrentUser();
+//                    DatabaseReference databaseReference =
+//                            database.getReference("/" + usr.getUid());
+//                    databaseReference.child("doner").addValueEventListener(new ValueEventListener(){
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            String type = dataSnapshot.getValue().toString();
+//                            if(type.toLowerCase().equals("true")) {
+//                                startActivity(new Intent(getApplicationContext(),
+//                                        PostActivity.class));
+//                            }
+//                            else{
+//                                startActivity(new Intent(getApplicationContext(),
+//                                        MyPostsActivity.class));
+//                            }
+//                        }
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//                }
+//            }
         };
-        
     }
 
     /*Register as a donor*/
