@@ -231,7 +231,7 @@ public class PostActivity extends AppCompatActivity implements
         Date date_today = new Date();
 
 
-        if(newTitle.matches("") || newFoodType.matches("Select Food Type *")){
+        if(newTitle.matches("") || newFoodType.matches("Select Food Type *")||newExpiredDate.matches("")){
 
             Toast.makeText(this, "Please fill in correct title / food type / expired date for your post", Toast.LENGTH_SHORT ).show();
 
