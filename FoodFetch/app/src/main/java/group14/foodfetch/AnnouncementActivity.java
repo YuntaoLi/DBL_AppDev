@@ -287,6 +287,7 @@ public class AnnouncementActivity extends AppCompatActivity implements
                 break;
             case R.id.navbuttonLogout:
                 firebaseAuth.signOut();
+                System.out.println("userIsLoggedIn = false");
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
