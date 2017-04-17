@@ -27,6 +27,23 @@ public class Post extends Publish{
         setAcceptence("false");
         //setPublishID(1);  ///should be replaced by a generator function later
     }
+
+    public Post(String title, String foodType, String expiredDate, String publishID){
+        setTitle(title);
+        setFoodType(foodType);
+
+        if (expiredDate != null) { //in case no date is found
+            setExpiredDate(expiredDate);
+        }
+        else {
+            setExpiredDate("No Date Found");
+        }
+
+        setPublishID(publishID);
+
+        setAcceptence("false");
+        //setPublishID(1);  ///should be replaced by a generator function later
+    }
     //----------------------------------------------------------------------------------------------
 
 }

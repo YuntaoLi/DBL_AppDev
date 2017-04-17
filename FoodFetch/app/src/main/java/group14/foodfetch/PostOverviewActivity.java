@@ -136,7 +136,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
                             Log.v("Value", "this is the acceptence: " + post.get("acceptence"));
                             if(post.get("acceptence").equals("false")) { //post hasn't been accepted yet
                                 Log.v("Value", "this is the title: " + post.get("title"));
-                                Post tempPost = new Post(post.get("title"), post.get("foodType"), post.get("expiredDate"));
+                                Post tempPost = new Post(post.get("title"), post.get("foodType"), post.get("expiredDate"), post.get("publishID"));
                                 retrievedPosts.add(tempPost);
                             }
                         }
@@ -176,7 +176,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
 
         for (Post post : retrievedPosts) {
             if (post.getAcceptence() == "false") { //if it's already accapted, then don't show
-                String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate();
+                String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate() + "\n" + post.getPublishID();
                 postItems.add(postInfo);
             }
         }
@@ -200,6 +200,16 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
             //case R.id.button?
         }
 
+    }
+
+    public void acceptPost(int position){ //not working yet
+        String[] splitter = postItems.get(position).split(" - ");
+        String postID = splitter[1];
+        String userID = splitter[2];
+        int temp = Integer.parseInt(postID)-1;
+        String RealUserID = String.valueOf(temp);
+        Log.v("VALUE", "postID en userID" +postID + userID );
+        mConditionRef.child(RealUserID).child("publish").child(postID).removeValue();
     }
 
     //==============================================================================================
@@ -266,7 +276,8 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
                 viewHolder.button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(), "Post accepted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Post number "+ position + "accepted", Toast.LENGTH_SHORT).show();
+                        acceptPost(position);
                         postItems.remove(position);
                         adapter.notifyDataSetChanged();
                     }
