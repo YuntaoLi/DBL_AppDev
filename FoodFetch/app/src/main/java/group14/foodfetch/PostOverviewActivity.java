@@ -11,6 +11,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -125,24 +126,8 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
 
 
                 /* this is different from MyPosts*/
-                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                retrievePosts(dataSnapshot);
 
-                if (map.get("doner").toString().equals("true")) {
-                    Log.v("VALUE", "this is a donor");
-                    if (map.get("publish") != null) {
-                        Log.v("Value", "this is the publish: " + map.get("publish").toString());
-                        ArrayList<HashMap<String, String>> tempArray = (ArrayList<HashMap<String, String>>)map.get(("publish"));
-                        for (HashMap<String, String> post : tempArray) {
-                            Log.v("Value", "this is the acceptence: " + post.get("acceptence"));
-                            if(post.get("acceptence").equals("false")) { //post hasn't been accepted yet
-                                Log.v("Value", "this is the title: " + post.get("title"));
-                                Post tempPost = new Post(post.get("title"), post.get("foodType"), post.get("expiredDate"), post.get("publishID"));
-                                retrievedPosts.add(tempPost);
-                            }
-                        }
-                    }
-                }
-                fillList();
                 Log.v("Value", "this is the postItems: " + postItems);
 
                 Log.v("VALUE", "Rertrieved posts after Listener: "+Arrays.toString(retrievedPosts.toArray()));
@@ -151,17 +136,20 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+                //retrievePosts(dataSnapshot);  //this should be actually used
+
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 //Post removedPost = dataSnapshot.getValue(Post.class);
                 //retrievedPosts.remove(removedPost);
+                //retrievePosts(dataSnapshot);
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                //retrievePosts(dataSnapshot);
             }
 
             @Override
@@ -184,6 +172,26 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         Log.v("VALUE", "fillList: "+Arrays.toString(retrievedPosts.toArray()));
     }
 
+    public void retrievePosts(DataSnapshot dataSnapshot){
+        Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+
+        if (map.get("doner").toString().equals("true")) {
+            Log.v("VALUE", "this is a donor");
+            if (map.get("publish") != null) {
+                Log.v("Value", "this is the publish: " + map.get("publish").toString());
+                ArrayList<HashMap<String, String>> tempArray = (ArrayList<HashMap<String, String>>)map.get(("publish"));
+                for (HashMap<String, String> post : tempArray) {
+                    Log.v("Value", "this is the acceptence: " + post.get("acceptence"));
+                    if(post.get("acceptence").equals("false")) { //post hasn't been accepted yet
+                        Log.v("Value", "this is the title: " + post.get("title"));
+                        Post tempPost = new Post(post.get("title"), post.get("foodType"), post.get("expiredDate"), post.get("publishID"));
+                        retrievedPosts.add(tempPost);
+                    }
+                }
+            }
+        }
+        fillList();
+    }
 
 
     //==============================================================================================
@@ -207,9 +215,9 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         String postID = splitter[1];
         String userID = splitter[2];
         int temp = Integer.parseInt(postID)-1;
-        String RealUserID = String.valueOf(temp);
+        String RealPostID = String.valueOf(temp);
         Log.v("VALUE", "postID en userID" +postID + userID );
-        mConditionRef.child(RealUserID).child("publish").child(postID).removeValue();
+        mConditionRef.child(userID).child("publish").child(RealPostID).child("acceptence").setValue("true");
     }
 
     //==============================================================================================
