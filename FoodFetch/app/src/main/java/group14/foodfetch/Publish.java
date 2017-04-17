@@ -96,7 +96,7 @@ abstract class Publish {
         return publishID;
     }
 
-    protected boolean isAcceptence() {
+    protected boolean getAcceptence() {
         return acceptence;
     }
 

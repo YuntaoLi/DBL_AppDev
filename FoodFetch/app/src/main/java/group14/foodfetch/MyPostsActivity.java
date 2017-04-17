@@ -37,8 +37,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class MyPostsActivity extends ListActivity implements View.OnClickListener {
 
@@ -74,9 +76,8 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
         componentSetup();
         AddSearchListener();
         fillList();
-        Log.v("VALUE", Arrays.toString(retrievedPosts.toArray()));
-        Log.v("VALUE", "Retrieved posts should be finished"+Arrays.toString(retrievedPosts.toArray()));
-        Log.v("VALUE", "PostItems should be filled: "+Arrays.toString(postItems.toArray()));
+        Log.v("VALUE", "Retrieved posts:"+Arrays.toString(retrievedPosts.toArray()));
+        Log.v("VALUE", "PostItems: "+Arrays.toString(postItems.toArray()));
     }
 
     //==============================================================================================
@@ -138,7 +139,7 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
                         retrievedPosts.add(post);
                         Log.v("VALUE", "RetrievedPosts During OnChildAdded: "+Arrays.toString(retrievedPosts.toArray()));
                         Log.v("VALUE", "PostItems during OnChildAdded: "+Arrays.toString(postItems.toArray()));
-
+                        fillList();
 
                     }
 
@@ -150,8 +151,8 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Post removedPost = dataSnapshot.getValue(Post.class);
-                retrievedPosts.remove(removedPost);
+                //Post removedPost = dataSnapshot.getValue(Post.class);
+                //retrievedPosts.remove(removedPost);
             }
 
             @Override
@@ -171,12 +172,11 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
         postItems.clear();
 
         for (Post post : retrievedPosts) {
-            String postInfo = post.getTitle()+"\n"+post.getFoodType()+"\n"+post.getExpiredDate();
-            postItems.add(postInfo);
+                String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate();
+                postItems.add(postInfo);
         }
         //Log.v("VALUE", postItems.get(0));
         adapter.notifyDataSetChanged();
-        Log.v("VALUE", "happens during fillList: "+Arrays.toString(retrievedPosts.toArray()));
     }
 
     public void possibleBugFixer(){ //change searchText in a delayed fashion to sync with Database?
@@ -226,12 +226,10 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
                 if(searchQuery.toString().equals("")){
                     fillList();
                     Log.v("VALUE", "Happens on equals nothing: "+Arrays.toString(retrievedPosts.toArray()));
-                    Log.v("VALUE", "OnChildAdded: "+Arrays.toString(postItems.toArray()));
                 }
                 else{
                     fillList();
                     searchItem(searchQuery.toString());
-                    Log.v("VALUE", "OnChildAdded: "+Arrays.toString(postItems.toArray()));
                 }
             }
 

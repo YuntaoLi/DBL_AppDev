@@ -37,15 +37,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class PostOverviewActivity extends ListActivity implements View.OnClickListener {
 
     //list stuff
     private ListView mListView;
     private ArrayList<Post> retrievedPosts;
-    private ArrayList<User> retrievedDonors;
+    private ArrayList<Donor> retrievedDonors;
     private ArrayList<String> postItems;
     private ArrayAdapter<String> adapter;
     ValueEventListener databaseListener;
@@ -100,6 +102,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         //Arrays
         retrievedPosts = new ArrayList<Post>();
         postItems = new ArrayList<String>();
+        retrievedDonors = new ArrayList<Donor>();
 
         //List
         mListView = (ListView) findViewById(android.R.id.list);
@@ -119,17 +122,31 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         mConditionRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-                if (user.isDoner()) { //therefore: retrievedDonors
-                    retrievedDonors.add(user);
-                }
-                for (User user1 :retrievedDonors ){
-                    String userID = user1.getUsrid();
-                    Post post = dataSnapshot.child(userID).child("/publish").getValue(Post.class);
-                    retrievedPosts.add(post);
-                }
 
-                Log.v("VALUE", "OnChildAdded: "+Arrays.toString(retrievedPosts.toArray()));
+
+                /* this is different from MyPosts*/
+                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+
+                if (map.get("doner").toString().equals("true")) {
+                    Log.v("VALUE", "this is a donor");
+                    if (map.get("publish") != null) {
+                        Log.v("Value", "this is the publish: " + map.get("publish").toString());
+                        ArrayList<HashMap<String, String>> tempArray = (ArrayList<HashMap<String, String>>)map.get(("publish"));
+                        for (HashMap<String, String> post : tempArray) {
+                            Log.v("Value", "this is the title: " + post.get("title"));
+                            Post tempPost = new Post(post.get("title"), post.get("foodType"), post.get("expiredDate"));
+                            retrievedPosts.add(tempPost);
+                        }
+                    }
+                }
+                fillList();
+                Log.v("Value", "this is the postItems: " + postItems);
+                adapter.notifyDataSetChanged();
+
+
+
+
+                Log.v("VALUE", "Rertrieved posts after Listener: "+Arrays.toString(retrievedPosts.toArray()));
             }
 
             @Override
@@ -139,8 +156,8 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Post removedPost = dataSnapshot.getValue(Post.class);
-                retrievedPosts.remove(removedPost);
+                //Post removedPost = dataSnapshot.getValue(Post.class);
+                //retrievedPosts.remove(removedPost);
             }
 
             @Override
@@ -159,10 +176,11 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         postItems.clear();
 
         for (Post post : retrievedPosts) {
-            String postInfo = post.getTitle()+"\n"+post.getFoodType()+"\n"+post.getExpiredDate();
-            postItems.add(postInfo);
+            if (!post.getAcceptence()) { //if it's already accapted, then don't show
+                String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate();
+                postItems.add(postInfo);
+            }
         }
-        //Log.v("VALUE", postItems.get(0));
         adapter.notifyDataSetChanged();
         Log.v("VALUE", "fillList: "+Arrays.toString(retrievedPosts.toArray()));
     }

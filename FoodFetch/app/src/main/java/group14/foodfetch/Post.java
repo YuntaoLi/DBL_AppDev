@@ -16,7 +16,14 @@ public class Post extends Publish{
     public Post(String title, String foodType, String expiredDate){
         setTitle(title);
         setFoodType(foodType);
-        setExpiredDate(expiredDate);
+
+        if (expiredDate != null) { //in case no date is found
+            setExpiredDate(expiredDate);
+        }
+        else {
+            setExpiredDate("No Date Found");
+        }
+
         setAcceptence(false);
         //setPublishID(1);  ///should be replaced by a generator function later
     }

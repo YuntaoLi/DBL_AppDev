@@ -8,13 +8,12 @@ import java.util.List;
  * Created by s141680 on 27-3-2017.
  */
 
-public abstract class User {
+public class User { //i removed the abstract property here
 
     private String usrname;
     private String usrid;
     private boolean isDoner;
     private List<Publish> publishList = new ArrayList<Publish>();
-
 
     //set functions should be filled
 
@@ -22,7 +21,7 @@ public abstract class User {
         isDoner = doner;
     }
 
-     protected void setUsrid(String usrid) {
+    protected void setUsrid(String usrid) {
         this.usrid = usrid;
     }
 
