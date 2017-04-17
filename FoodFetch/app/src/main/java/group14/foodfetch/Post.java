@@ -24,7 +24,7 @@ public class Post extends Publish{
             setExpiredDate("No Date Found");
         }
 
-        setAcceptence(false);
+        setAcceptence("false");
         //setPublishID(1);  ///should be replaced by a generator function later
     }
     //----------------------------------------------------------------------------------------------

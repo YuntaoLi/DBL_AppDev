@@ -133,18 +133,17 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
                         Log.v("Value", "this is the publish: " + map.get("publish").toString());
                         ArrayList<HashMap<String, String>> tempArray = (ArrayList<HashMap<String, String>>)map.get(("publish"));
                         for (HashMap<String, String> post : tempArray) {
-                            Log.v("Value", "this is the title: " + post.get("title"));
-                            Post tempPost = new Post(post.get("title"), post.get("foodType"), post.get("expiredDate"));
-                            retrievedPosts.add(tempPost);
+                            Log.v("Value", "this is the acceptence: " + post.get("acceptence"));
+                            if(post.get("acceptence").equals("false")) { //post hasn't been accepted yet
+                                Log.v("Value", "this is the title: " + post.get("title"));
+                                Post tempPost = new Post(post.get("title"), post.get("foodType"), post.get("expiredDate"));
+                                retrievedPosts.add(tempPost);
+                            }
                         }
                     }
                 }
                 fillList();
                 Log.v("Value", "this is the postItems: " + postItems);
-                adapter.notifyDataSetChanged();
-
-
-
 
                 Log.v("VALUE", "Rertrieved posts after Listener: "+Arrays.toString(retrievedPosts.toArray()));
             }
@@ -176,7 +175,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         postItems.clear();
 
         for (Post post : retrievedPosts) {
-            if (!post.getAcceptence()) { //if it's already accapted, then don't show
+            if (post.getAcceptence() == "false") { //if it's already accapted, then don't show
                 String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate();
                 postItems.add(postInfo);
             }
