@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     else{
                                         System.out.println("userIsLoggedIn = true");
                                         startActivity(new Intent(getApplicationContext(),
-                                                AnnouncementActivity.class));//replace to postoverview
+                                                PostOverviewActivity.class));//replace to postoverview
                                     }
                                 }
                                 @Override

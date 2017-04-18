@@ -56,6 +56,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     private ArrayAdapter<String> adapter;
     ValueEventListener databaseListener;
     private final Handler handler = new Handler(); //to fix thé bug maybe
+    private String userAndPostID;
 
     //search
     private EditText searchTextHolder;
@@ -82,6 +83,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         componentSetup();
         AddSearchListener();
         fillList();
+        //checkConnection();
         Log.v("VALUE", Arrays.toString(retrievedPosts.toArray()));
         possibleBugFixer(3000);
     }
@@ -109,7 +111,12 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
             startActivity(new Intent(this, LoginActivity.class));
         }
     }
-
+/*
+    public void checkConnection() {
+        String s = FirebaseDatabase.getInstance().getReference(".info/connected").toString();
+        Log.v("value", "this is the ref"+s);
+    }
+*/
     public void componentSetup(){
 
         //Arrays
@@ -176,7 +183,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
 
         for (Post post : retrievedPosts) {
             if (post.getAcceptence() == "false") { //if it's already accapted, then don't show
-                String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate() + "\n" + post.getPublishID();
+                String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate();
                 postItems.add(postInfo);
             }
         }
@@ -230,13 +237,31 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     }
 
     public void acceptPost(int position){ //not working yet
-        String[] splitter = postItems.get(position).split(" - ");
+        String[] splitter = retrievedPosts.get(position).getPublishID().split(" - ");
         String postID = splitter[1];
         String userID = splitter[2];
-        int temp = Integer.parseInt(postID)-1;
+        int temp = Integer.parseInt(postID) - 1;
         String RealPostID = String.valueOf(temp);
         Log.v("VALUE", "postID en userID" +postID + userID );
         mConditionRef.child(userID).child("publish").child(RealPostID).child("acceptence").setValue("true");
+    }
+
+    public void deletePost(int position){
+        Log.v("VALUE", "the position is: "+position);
+        if (postItems.size() > 0) {
+            String[] splitter = retrievedPosts.get(position).getPublishID().split(" - ");
+            String postID = splitter[1];
+            String userID = splitter[2];
+            int temp = Integer.parseInt(postID) - 1;
+            String RealPostID = String.valueOf(temp);
+            Log.v("VALUE", "postID en userID" + postID + userID);
+            mConditionRef.child(userID).child("publish").child(RealPostID).setValue(null);
+        }
+    }
+
+    public String getUserAndPostID(int postition){
+        userAndPostID = retrievedPosts.get(postition).getPublishID();
+        return userAndPostID;
     }
 
     //==============================================================================================
@@ -300,7 +325,9 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.list_item_thumbnail);
                 viewHolder.title = (TextView) convertView.findViewById(R.id.list_item_text);
+                viewHolder.id = (TextView) convertView.findViewById(R.id.list_item_text_id);
                 viewHolder.button = (Button) convertView.findViewById(R.id.list_item_button);
+                viewHolder.button_delete = (Button) convertView.findViewById(R.id.list_item__button_delete);
                 viewHolder.button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -312,11 +339,25 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
                     }
 
                 });
+                viewHolder.button_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getContext(), "Post number "+ position + "deleted", Toast.LENGTH_SHORT).show();
+                        deletePost(position);
+                        postItems.remove(position);
+                        adapter.notifyDataSetChanged();
+                        possibleBugFixer(3000);// maybe not here
+                        recreate();
+                    }
+                                                            }
+
+                );
                 convertView.setTag(viewHolder);
                 }
             else {
                 mainViewholder = (ViewHolder) convertView.getTag();
                 mainViewholder.title.setText(getItem(position));
+                mainViewholder.id.setText(getUserAndPostID(position));
 
             }
                 return convertView;
@@ -326,6 +367,8 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     public class ViewHolder {
         ImageView thumbnail;
         TextView title;
+        TextView id;
         Button button;
+        Button button_delete;
     }
 }

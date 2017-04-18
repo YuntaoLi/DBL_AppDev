@@ -51,6 +51,7 @@ public class MyPostsActivity extends Activity implements View.OnClickListener {
     private ArrayList<String> postItems;
     private ArrayAdapter<String> adapter;
     private final Handler handler = new Handler(); //to fix thé bug maybe
+    private String userAndPostID;
 
     //search
     private EditText searchTextHolder;
@@ -174,7 +175,7 @@ public class MyPostsActivity extends Activity implements View.OnClickListener {
         postItems.clear();
 
         for (Post post : retrievedPosts) {
-                String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate() + "\n" + post.getPublishID();
+                String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate();
                 postItems.add(postInfo);
         }
         //Log.v("VALUE", postItems.get(0));
@@ -193,7 +194,7 @@ public class MyPostsActivity extends Activity implements View.OnClickListener {
     public void deletePost(int position){
         Log.v("VALUE", "the position is: "+position);
         if (postItems.size() > 0) {
-            String[] splitter = postItems.get(position).split(" - ");
+            String[] splitter = retrievedPosts.get(position).getPublishID().split(" - ");
             String postID = splitter[1];
             String userID = currentUser.getUid();
             int temp = Integer.parseInt(postID) - 1;
@@ -216,6 +217,11 @@ public class MyPostsActivity extends Activity implements View.OnClickListener {
             }
         }
         return false;
+    }
+
+    public String getUserAndPostID(int postition){
+        userAndPostID = retrievedPosts.get(postition).getPublishID();
+        return userAndPostID;
     }
 
     //==============================================================================================
@@ -249,6 +255,7 @@ public class MyPostsActivity extends Activity implements View.OnClickListener {
                 else{
                     fillList();
                     searchItem(searchQuery.toString());
+                    possibleBugFixer(3000);
                 }
             }
 
@@ -297,6 +304,7 @@ public class MyPostsActivity extends Activity implements View.OnClickListener {
                     viewHolder.thumbnail.setImageResource(R.drawable.notaccepted);
                 }
                 viewHolder.title = (TextView) convertView.findViewById(R.id.list_item_text);
+                viewHolder.id = (TextView) convertView.findViewById(R.id.list_item_text_id);
                 viewHolder.button = (Button) convertView.findViewById(R.id.list_item_button);
                 viewHolder.button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -314,6 +322,7 @@ public class MyPostsActivity extends Activity implements View.OnClickListener {
             else {
                 mainViewholder = (ViewHolder) convertView.getTag();
                 mainViewholder.title.setText(getItem(position));
+                mainViewholder.id.setText(getUserAndPostID(position));
 
             }
                 Log.v("VALUE", "");
@@ -324,6 +333,7 @@ public class MyPostsActivity extends Activity implements View.OnClickListener {
     public class ViewHolder {
         ImageView thumbnail;
         TextView title;
+        TextView id;
         Button button;
     }
 }

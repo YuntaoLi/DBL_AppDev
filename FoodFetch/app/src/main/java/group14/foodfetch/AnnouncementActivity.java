@@ -279,8 +279,8 @@ public class AnnouncementActivity extends AppCompatActivity implements
     /*Set up for menu buttons*/
     public void selectDrawerItem(MenuItem menuItem) {
         switch(menuItem.getItemId()) {
-            case R.id.navbuttonNewPost:
-                startActivity(new Intent(this, PostActivity.class));//Replace to postoverview
+            case R.id.navbuttonPostOv:
+                startActivity(new Intent(this, PostOverviewActivity.class));//Replace to postoverview
                 break;
             case R.id.navbuttonAnnouncement:
                 startActivity(new Intent(this, AnnouncementActivity.class));

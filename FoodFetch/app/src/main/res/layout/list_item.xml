@@ -25,6 +25,18 @@
         android:layout_toRightOf="@+id/list_item_thumbnail"
         android:layout_toEndOf="@+id/list_item_thumbnail" />
 
+    <TextView
+        android:id="@+id/list_item_text_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_item_text"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_toEndOf="@+id/list_item_thumbnail"
+        android:layout_toRightOf="@+id/list_item_thumbnail"
+        android:text="Name"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/list_item_button"
         android:layout_width="wrap_content"
@@ -35,6 +47,16 @@
         android:layout_marginEnd="11dp"
         android:layout_marginRight="11dp"
         android:text="Accept" />
+
+    <Button
+        android:id="@+id/list_item__button_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Delete"
+        android:layout_below="@+id/list_item_button"
+        android:layout_alignLeft="@+id/list_item_button"
+        android:layout_alignStart="@+id/list_item_button" />
 
 
 </RelativeLayout>
