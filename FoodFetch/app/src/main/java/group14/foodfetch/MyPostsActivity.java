@@ -7,6 +7,7 @@ package group14.foodfetch;
  * by typing a keyword in the search bar
  */
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -42,7 +43,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class MyPostsActivity extends ListActivity implements View.OnClickListener {
+public class MyPostsActivity extends Activity implements View.OnClickListener {
 
     //list stuff
     private ListView mListView;
@@ -61,7 +62,7 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
     private FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mConditionRef;
+    private DatabaseReference currentUserRef;
     private boolean userIsLoggedIn = false; //for testing requirements
 
     //==============================================================================================
@@ -78,6 +79,7 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
         fillList();
         Log.v("VALUE", "Retrieved posts:"+Arrays.toString(retrievedPosts.toArray()));
         Log.v("VALUE", "PostItems: "+Arrays.toString(postItems.toArray()));
+        possibleBugFixer(3000);
     }
 
     //==============================================================================================
@@ -119,7 +121,7 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
 
         //List
         mListView = (ListView) findViewById(android.R.id.list);
-        adapter = new MyListAdapter(this, R.layout.list_item, postItems);
+        adapter = new MyListAdapter(this, R.layout.list_item_my_posts, postItems);
         mListView.setAdapter(adapter);
 
         //button
@@ -130,9 +132,9 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
         searchTextHolder = (EditText) findViewById(R.id.text_search);
 
         //Database reference
-        mConditionRef = mRootRef.child(currentUser.getUid() + "/publish"); //refer to current users posts
+        currentUserRef = mRootRef.child(currentUser.getUid() + "/publish"); //refer to current users posts
 
-        mConditionRef.addChildEventListener(new ChildEventListener() {
+        currentUserRef.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Post post = dataSnapshot.getValue(Post.class);
@@ -172,26 +174,48 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
         postItems.clear();
 
         for (Post post : retrievedPosts) {
-                String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate();
+                String postInfo = post.getTitle() + "\n" + post.getFoodType() + "\n" + post.getExpiredDate() + "\n" + post.getPublishID();
                 postItems.add(postInfo);
         }
         //Log.v("VALUE", postItems.get(0));
         adapter.notifyDataSetChanged();
     }
 
-    public void possibleBugFixer(){ //change searchText in a delayed fashion to sync with Database?
+    public void possibleBugFixer(int time){ //change searchText in a delayed fashion to sync with Database?
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                searchTextHolder.setText("/");
+                fillList();
             }
-        }, 4000);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                searchTextHolder.setText("");
+        }, time);
+    }
+
+    public void deletePost(int position){
+        Log.v("VALUE", "the position is: "+position);
+        if (postItems.size() > 0) {
+            String[] splitter = postItems.get(position).split(" - ");
+            String postID = splitter[1];
+            String userID = currentUser.getUid();
+            int temp = Integer.parseInt(postID) - 1;
+            String RealPostID = String.valueOf(temp);
+            Log.v("VALUE", "postID en userID" + postID + userID);
+            currentUserRef.child(RealPostID).setValue(null);
+        }
+    }
+
+    public boolean postHasBeenAccepted(int position){
+        if (retrievedPosts.size() > 0) {
+            String accepted = retrievedPosts.get(position).getAcceptence();
+            if (accepted.equals("true")) {
+                Log.v("VALUE", "I AM ACCEPTED");
+                return true;
+
+            } else {
+                Log.v("VALUE", "I AM NOT");
+                return false;
             }
-        }, 4000);
+        }
+        return false;
     }
 
     //==============================================================================================
@@ -200,14 +224,9 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.buttonLogout:/*remove it in the future*/
-                firebaseAuth.signOut();
-                userIsLoggedIn = false;
-                printLoginStatus();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
+            case R.id.buttonLogout: //is now refresh
+                fillList();
                 break;
-            //case R.id.button?
         }
 
     }
@@ -271,14 +290,22 @@ public class MyPostsActivity extends ListActivity implements View.OnClickListene
                 convertView = inflater.inflate(layout, parent, false);
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.list_item_thumbnail);
+                if (postHasBeenAccepted(position)) {
+                    viewHolder.thumbnail.setImageResource(R.drawable.accepted);
+                }
+                if (!postHasBeenAccepted(position)){
+                    viewHolder.thumbnail.setImageResource(R.drawable.notaccepted);
+                }
                 viewHolder.title = (TextView) convertView.findViewById(R.id.list_item_text);
                 viewHolder.button = (Button) convertView.findViewById(R.id.list_item_button);
                 viewHolder.button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(), "Post accepted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Post "+ position +" has been deleted", Toast.LENGTH_SHORT).show();
+                        deletePost(position);
                         postItems.remove(position);
                         adapter.notifyDataSetChanged();
+                        recreate();
                     }
 
                 });

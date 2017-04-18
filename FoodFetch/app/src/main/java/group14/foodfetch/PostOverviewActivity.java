@@ -11,11 +11,14 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -52,6 +55,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     private ArrayList<String> postItems;
     private ArrayAdapter<String> adapter;
     ValueEventListener databaseListener;
+    private final Handler handler = new Handler(); //to fix thé bug maybe
 
     //search
     private EditText searchTextHolder;
@@ -79,6 +83,14 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         AddSearchListener();
         fillList();
         Log.v("VALUE", Arrays.toString(retrievedPosts.toArray()));
+        possibleBugFixer(3000);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_page_menu, menu);
+        return true;
     }
 
     //==============================================================================================
@@ -193,6 +205,16 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         fillList();
     }
 
+    public void possibleBugFixer(int time){ //change searchText in a delayed fashion to sync with Database?
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fillList();
+            }
+        }, time);
+
+    }
+
 
     //==============================================================================================
     //button clicking
@@ -200,12 +222,9 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.buttonLogout:/*remove it in the future*/
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
+            case R.id.buttonLogout: //is now refresh
+                fillList();
                 break;
-            //case R.id.button?
         }
 
     }
@@ -246,6 +265,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
 
             }
         });
+
     }
 
     public void searchItem(String textToSearchFor){
@@ -288,6 +308,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
                         acceptPost(position);
                         postItems.remove(position);
                         adapter.notifyDataSetChanged();
+                        recreate();
                     }
 
                 });
