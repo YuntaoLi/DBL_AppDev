@@ -60,6 +60,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     ValueEventListener databaseListener;
     private final Handler handler = new Handler(); //to fix thé bug maybe
     private String userAndPostID;
+    private ChildEventListener mainListener;
 
     //search
     private EditText searchTextHolder;
@@ -145,7 +146,7 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         //Database reference
         mConditionRef = mRootRef; //refer to current users posts
 
-        mConditionRef.addChildEventListener(new ChildEventListener() {
+        mainListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -181,7 +182,8 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+        mConditionRef.addChildEventListener(mainListener);
     }
 
     public void fillList() {
@@ -240,6 +242,12 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
                 taskTimer = new TaskTimer(delayTask);
                 handler.postDelayed(taskTimer, 1*1000);
                 delayTask.execute();
+                retrievedPosts.clear();
+                postItems.clear();
+                mConditionRef.removeEventListener(mainListener);
+                mConditionRef.addChildEventListener(mainListener);
+                fillList();
+                possibleBugFixer(3000);
                 break;
         }
 
