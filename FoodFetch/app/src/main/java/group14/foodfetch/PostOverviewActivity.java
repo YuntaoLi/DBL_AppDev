@@ -8,11 +8,14 @@ package group14.foodfetch;
  */
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -70,6 +73,9 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     private FirebaseUser currentUser;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mConditionRef;
+
+    private TaskTimer taskTimer;
+    private ProgressDialog pDialog;
 
     //==============================================================================================
 
@@ -230,7 +236,10 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.buttonLogout: //is now refresh
-                fillList();
+                DelayTask delayTask = new DelayTask(PostOverviewActivity.this);
+                taskTimer = new TaskTimer(delayTask);
+                handler.postDelayed(taskTimer, 1*1000);
+                delayTask.execute();
                 break;
         }
 
@@ -370,5 +379,36 @@ public class PostOverviewActivity extends ListActivity implements View.OnClickLi
         TextView id;
         Button button;
         Button button_delete;
+    }
+
+    public class DelayTask extends AsyncTask<Void,Void,Boolean> {
+        private ListActivity activity;
+
+        public DelayTask(ListActivity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try{
+                fillList();
+                return true;
+            }catch (Exception e){return false;}
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            super.onPostExecute(success);
+            if (success) {
+//                Toast.makeText(activity, "You are logged in", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(activity, "Error, no connection", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
