@@ -12,6 +12,15 @@ public class Announcement extends Publish {
     public Announcement(String title, String foodType){
         setTitle(title);
         setFoodType(foodType);
+
+        //setPublishID(1);  ///should be replaced by a generator function later
+    }
+
+    public Announcement(String title, String foodType, String Date){
+        setTitle(title);
+        setFoodType(foodType);
+        setPublishDate(Date);
+
         //setPublishID(1);  ///should be replaced by a generator function later
     }
     //----------------------------------------------------------------------------------------------
